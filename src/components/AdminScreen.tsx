@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import type { Catalog, CatalogCategory } from "../types";
+import type { Catalog, CatalogCategory, CatalogItem } from "../types";
+import { EmojiPicker } from "./EmojiPicker";
+import { guessCategoryIcon, guessItemIcon } from "../data/emoji";
 import {
   checkAdminPassword,
   downloadCatalogJson,
@@ -110,7 +112,7 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
     if (!name) return;
     let id = newCategoryId(name);
     if (draft.categories.some((c) => c.id === id)) id = `${id}-${crypto.randomUUID().slice(0, 4)}`;
-    const cat: CatalogCategory = { id, name, items: [] };
+    const cat: CatalogCategory = { id, name, icon: guessCategoryIcon(name), items: [] };
     updateDraft({ ...draft, categories: [...draft.categories, cat] });
     setSelectedCategoryId(id);
     setNewCategoryName("");
@@ -121,6 +123,29 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
     updateDraft({
       ...draft,
       categories: draft.categories.map((c) => (c.id === selected.id ? { ...c, name } : c)),
+    });
+  };
+
+  const setCategoryIcon = (icon: string | undefined) => {
+    if (!selected) return;
+    updateDraft({
+      ...draft,
+      categories: draft.categories.map((c) => (c.id === selected.id ? { ...c, icon } : c)),
+    });
+  };
+
+  const setItemIcon = (itemName: string, icon: string | undefined) => {
+    if (!selected) return;
+    updateDraft({
+      ...draft,
+      categories: draft.categories.map((c) =>
+        c.id === selected.id
+          ? {
+              ...c,
+              items: c.items.map((i) => (i.name === itemName ? { ...i, icon } : i)),
+            }
+          : c,
+      ),
     });
   };
 
@@ -136,14 +161,15 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
     if (!selected) return;
     const name = newItemName.trim();
     if (!name) return;
-    if (selected.items.includes(name)) {
+    if (selected.items.some((i) => i.name === name)) {
       setNewItemName("");
       return;
     }
+    const item: CatalogItem = { name, icon: guessItemIcon(name) ?? selected.icon };
     updateDraft({
       ...draft,
       categories: draft.categories.map((c) =>
-        c.id === selected.id ? { ...c, items: [...c.items, name] } : c,
+        c.id === selected.id ? { ...c, items: [...c.items, item] } : c,
       ),
     });
     setNewItemName("");
@@ -154,7 +180,7 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
     updateDraft({
       ...draft,
       categories: draft.categories.map((c) =>
-        c.id === selected.id ? { ...c, items: c.items.filter((i) => i !== name) } : c,
+        c.id === selected.id ? { ...c, items: c.items.filter((i) => i.name !== name) } : c,
       ),
     });
   };
@@ -250,7 +276,14 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
                         className={`admin-list__btn ${cat.id === selectedCategoryId ? "is-active" : ""}`}
                         onClick={() => setSelectedCategoryId(cat.id)}
                       >
-                        {cat.name}
+                        <span className="admin-list__label">
+                          {cat.icon && (
+                            <span className="admin-list__icon" aria-hidden="true">
+                              {cat.icon}
+                            </span>
+                          )}
+                          {cat.name}
+                        </span>
                         <span className="admin-list__count">{cat.items.length}</span>
                       </button>
                     </li>
@@ -271,22 +304,38 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
               <div>
                 {selected ? (
                   <>
-                    <label className="field">
-                      <span>Category name</span>
-                      <input
-                        value={selected.name}
-                        onChange={(e) => renameCategory(e.target.value)}
-                      />
-                    </label>
+                    <div className="field">
+                      <span>Category name & icon</span>
+                      <div className="admin-icon-field">
+                        <EmojiPicker
+                          value={selected.icon}
+                          onChange={setCategoryIcon}
+                          label={`Icon for ${selected.name}`}
+                        />
+                        <input
+                          value={selected.name}
+                          onChange={(e) => renameCategory(e.target.value)}
+                          aria-label="Category name"
+                        />
+                      </div>
+                    </div>
                     <h3>Items in {selected.name}</h3>
-                    <ul className="admin-list">
+                    <p className="hint">Tap an icon to change it. New items get a matching icon automatically.</p>
+                    <ul className="admin-list admin-list--items">
                       {selected.items.map((item) => (
-                        <li key={item} className="admin-list__row">
-                          <span>{item}</span>
+                        <li key={item.name} className="admin-list__row">
+                          <span className="admin-item-label">
+                            <EmojiPicker
+                              value={item.icon}
+                              onChange={(icon) => setItemIcon(item.name, icon)}
+                              label={`Icon for ${item.name}`}
+                            />
+                            <span>{item.name}</span>
+                          </span>
                           <button
                             type="button"
                             className="btn btn--ghost btn--small"
-                            onClick={() => removeItem(item)}
+                            onClick={() => removeItem(item.name)}
                           >
                             Remove
                           </button>
