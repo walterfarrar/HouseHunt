@@ -149,14 +149,14 @@ select {
 
 .map-compass {
   position: absolute;
-  top: max(0.6rem, env(safe-area-inset-top));
-  right: max(0.6rem, env(safe-area-inset-right));
-  width: 46px;
-  height: 46px;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  width: 96px;
+  height: 96px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: color-mix(in srgb, #ffffff 82%, transparent);
+  background: color-mix(in srgb, #ffffff 88%, transparent);
   box-shadow: var(--shadow);
   pointer-events: none;
   z-index: 5;
