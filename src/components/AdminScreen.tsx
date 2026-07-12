@@ -18,6 +18,8 @@ type Props = {
   catalog: Catalog;
   onCatalogChange: (catalog: Catalog) => void;
   onRefresh?: () => void;
+  /** Also push the current floor plan when publishing, so one button does both. */
+  onPublishLayout?: (token: string) => Promise<{ ok: boolean; error?: string }>;
   onBack: () => void;
   onEditMap?: () => void;
   onLock?: () => void;
@@ -32,7 +34,7 @@ function newCategoryId(name: string) {
   );
 }
 
-export function AdminScreen({ catalog, onCatalogChange, onRefresh, onBack, onEditMap, onLock }: Props) {
+export function AdminScreen({ catalog, onCatalogChange, onRefresh, onPublishLayout, onBack, onEditMap, onLock }: Props) {
   const [unlocked, setUnlocked] = useState(() => isAdminUnlocked());
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
@@ -106,14 +108,30 @@ export function AdminScreen({ catalog, onCatalogChange, onRefresh, onBack, onEdi
     setStatus(null);
     persistGh(gh, token);
     const result = await publishCatalogToGithub(draft, { ...gh, token });
-    setSaving(false);
-    if (result.ok) {
-      setStatus(
-        "Published. The live GitHub Pages site already has the new lists — refresh Dad’s iPad to pick them up.",
-      );
-    } else {
+    if (!result.ok) {
+      setSaving(false);
       setStatus(result.error ?? "Publish failed.");
+      return;
     }
+    // One publish pushes everything shared: lists AND the current floor plan.
+    if (onPublishLayout) {
+      const layout = await onPublishLayout(token);
+      setSaving(false);
+      if (!layout.ok) {
+        setStatus(
+          `Lists published, but the floor plan failed: ${layout.error ?? "unknown error"}`,
+        );
+        return;
+      }
+      setStatus(
+        "Published lists + floor plan. Refresh the other device (↻ Refresh) to pick them up.",
+      );
+      return;
+    }
+    setSaving(false);
+    setStatus(
+      "Published. The live GitHub Pages site already has the new lists — refresh Dad’s iPad to pick them up.",
+    );
   };
 
   const addCategory = () => {
@@ -488,7 +506,7 @@ export function AdminScreen({ catalog, onCatalogChange, onRefresh, onBack, onEdi
               disabled={saving || !token}
               onClick={handlePublish}
             >
-              {saving ? "Publishing…" : "Publish catalog to live site"}
+              {saving ? "Publishing…" : onPublishLayout ? "Publish to live site (lists + map)" : "Publish catalog to live site"}
             </button>
           </section>
         </>

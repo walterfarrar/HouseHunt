@@ -334,6 +334,7 @@ export default function App() {
               setCatalog(next);
             }}
             onRefresh={refreshApp}
+            onPublishLayout={(token) => publishHouseLayout(house, token)}
             onBack={leaveAdmin}
             onEditMap={() => {
               leaveAdmin();

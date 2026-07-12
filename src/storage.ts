@@ -89,22 +89,23 @@ export async function fetchSharedHouse(): Promise<HouseData | null> {
 }
 
 /**
- * Prefer newer shared layout for rooms/doors; keep this device's logged items.
+ * Adopt the shared floor plan, keeping this device's own logged items.
+ *
+ * The shared house.json in the repo is the deliberate, published source of
+ * truth for rooms/doors, so we always take it (a device only reaches here when
+ * a shared layout was successfully fetched). This is what makes a published map
+ * reliably show up on every other device — a previous "newer timestamp wins"
+ * rule could silently drop the update when clocks differed or a local save had
+ * been re-stamped to "now".
  */
 export function mergeSharedLayout(local: HouseData, remote: HouseData): HouseData {
-  const localTime = local.updatedAt ? Date.parse(local.updatedAt) : 0;
-  const remoteTime = remote.updatedAt ? Date.parse(remote.updatedAt) : 0;
-
-  if (remoteTime > localTime) {
-    return {
-      version: 1,
-      updatedAt: remote.updatedAt,
-      rooms: remote.rooms,
-      doors: remote.doors,
-      items: local.items,
-    };
-  }
-  return local;
+  return {
+    version: 1,
+    updatedAt: remote.updatedAt ?? local.updatedAt,
+    rooms: remote.rooms,
+    doors: remote.doors,
+    items: local.items,
+  };
 }
 
 export async function publishHouseLayout(
