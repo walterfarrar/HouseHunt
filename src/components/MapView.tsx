@@ -280,6 +280,14 @@ export function MapView({
           />
         ))}
       </div>
+      <div className="map-compass" role="img" aria-label="Compass: north is up">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle className="map-compass__ring" cx="24" cy="24" r="21" />
+          <polygon className="map-compass__needle-n" points="24,17 28,27 24,24 20,27" />
+          <polygon className="map-compass__needle-s" points="24,40 28,29 24,32 20,29" />
+          <text className="map-compass__n" x="24" y="13" textAnchor="middle">N</text>
+        </svg>
+      </div>
     </div>
   );
 }

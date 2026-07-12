@@ -147,6 +147,49 @@ select {
   touch-action: none;
 }
 
+.map-compass {
+  position: absolute;
+  top: max(0.6rem, env(safe-area-inset-top));
+  right: max(0.6rem, env(safe-area-inset-right));
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, #ffffff 82%, transparent);
+  box-shadow: var(--shadow);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.map-compass svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.map-compass__ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--line) 55%, transparent);
+  stroke-width: 2;
+}
+
+.map-compass__needle-n {
+  fill: #d1495b;
+}
+
+.map-compass__needle-s {
+  fill: color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.map-compass__n {
+  fill: #d1495b;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: inherit;
+}
+
 .map-viewport--placing-door .room {
   cursor: pointer;
 }
