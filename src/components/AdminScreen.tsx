@@ -46,9 +46,14 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
   const [draft, setDraft] = useState<Catalog>(() => structuredClone(catalog));
   const [gh, setGh] = useState(() => {
     const s = loadGithubSettings();
-    return { ...s, path: s.path.includes("catalog") ? s.path : "public/catalog.json" };
+    return {
+      owner: s.owner,
+      repo: s.repo,
+      branch: s.branch,
+      pagesBranch: s.pagesBranch,
+    };
   });
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(() => loadGithubSettings().token);
 
   useEffect(() => {
     setDraft(structuredClone(catalog));
@@ -60,6 +65,11 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
     setDraft(next);
     onCatalogChange(next);
     saveCatalogLocal(next);
+  };
+
+  const persistGh = (next: typeof gh, nextToken = token) => {
+    setGh(next);
+    saveGithubSettings({ ...next, path: "public/catalog.json", token: nextToken });
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -77,30 +87,28 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
   const handleLogout = () => {
     lockAdmin();
     setUnlocked(false);
-    setToken("");
     onLock?.();
   };
 
   const handleSaveLocal = () => {
     saveCatalogLocal(draft);
-    setStatus("Saved on this device. Dad’s iPad won’t see it until you publish or commit catalog.json.");
+    setStatus("Saved on this device. Dad’s iPad won’t see it until you publish.");
   };
 
   const handleDownload = () => {
     downloadCatalogJson(draft);
-    setStatus("Downloaded catalog.json — put it in public/ and push to GitHub Pages.");
+    setStatus("Downloaded catalog.json — put it in public/ and push, or just use Publish instead.");
   };
 
   const handlePublish = async () => {
     setSaving(true);
     setStatus(null);
-    const settings = { ...gh, path: gh.path || "public/catalog.json" };
-    saveGithubSettings(settings);
-    const result = await publishCatalogToGithub(draft, { ...settings, token });
+    persistGh(gh, token);
+    const result = await publishCatalogToGithub(draft, { ...gh, token });
     setSaving(false);
     if (result.ok) {
       setStatus(
-        "Published to GitHub. Run npm run deploy (or wait for Pages) so the iPad picks it up.",
+        "Published. The live GitHub Pages site already has the new lists — refresh Dad’s iPad to pick them up.",
       );
     } else {
       setStatus(result.error ?? "Publish failed.");
@@ -406,16 +414,16 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
           <section className="admin-card">
             <h2>Publish to GitHub Pages</h2>
             <p className="hint">
-              Uses the GitHub API to update <code>public/catalog.json</code> in your repo. Create a
-              fine-grained personal access token with Contents: Read and write on this repo only.
-              Token stays in this tab only (not saved).
+              Publish updates the live site immediately (and keeps the repo in sync). Create a
+              fine-grained personal access token with Contents: Read and write on this repo. The
+              token is saved in this browser so you only enter it once.
             </p>
             <div className="admin-split">
               <label className="field">
                 <span>Owner</span>
                 <input
                   value={gh.owner}
-                  onChange={(e) => setGh({ ...gh, owner: e.target.value })}
+                  onChange={(e) => persistGh({ ...gh, owner: e.target.value })}
                   placeholder="your-github-user"
                   autoComplete="off"
                 />
@@ -424,25 +432,25 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
                 <span>Repo</span>
                 <input
                   value={gh.repo}
-                  onChange={(e) => setGh({ ...gh, repo: e.target.value })}
-                  placeholder="ImportantTracker"
+                  onChange={(e) => persistGh({ ...gh, repo: e.target.value })}
+                  placeholder="HouseHunt"
                   autoComplete="off"
                 />
               </label>
               <label className="field">
-                <span>Branch</span>
+                <span>Source branch</span>
                 <input
                   value={gh.branch}
-                  onChange={(e) => setGh({ ...gh, branch: e.target.value })}
+                  onChange={(e) => persistGh({ ...gh, branch: e.target.value })}
                   placeholder="main"
                 />
               </label>
               <label className="field">
-                <span>File path</span>
+                <span>Pages branch</span>
                 <input
-                  value={gh.path}
-                  onChange={(e) => setGh({ ...gh, path: e.target.value })}
-                  placeholder="public/catalog.json"
+                  value={gh.pagesBranch}
+                  onChange={(e) => persistGh({ ...gh, pagesBranch: e.target.value })}
+                  placeholder="gh-pages"
                 />
               </label>
             </div>
@@ -451,7 +459,11 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
               <input
                 type="password"
                 value={token}
-                onChange={(e) => setToken(e.target.value)}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  setToken(next);
+                  saveGithubSettings({ token: next });
+                }}
                 placeholder="ghp_…"
                 autoComplete="off"
               />
@@ -462,7 +474,7 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
               disabled={saving || !token}
               onClick={handlePublish}
             >
-              {saving ? "Publishing…" : "Publish catalog to GitHub"}
+              {saving ? "Publishing…" : "Publish catalog to live site"}
             </button>
           </section>
         </>

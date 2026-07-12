@@ -1,12 +1,7 @@
 import { defaultCatalog } from "./data/defaultCatalog";
 import { guessCategoryIcon, guessItemIcon } from "./data/emoji";
 import type { Catalog, CatalogCategory, CatalogItem } from "./types";
-import {
-  loadGithubSettings,
-  publishJsonToGithub,
-  saveGithubSettings,
-  type GithubPublishConfig,
-} from "./lib/github";
+import { publishSiteJson, type GithubSettings } from "./lib/github";
 
 const CATALOG_KEY = "house-hunt-catalog-v1";
 const AUTH_KEY = "house-hunt-admin-ok";
@@ -109,23 +104,22 @@ export function downloadCatalogJson(catalog: Catalog): void {
   URL.revokeObjectURL(url);
 }
 
-export type { GithubPublishConfig };
+export type { GithubPublishConfig, GithubSettings } from "./lib/github";
 
 export async function publishCatalogToGithub(
   catalog: Catalog,
-  config: GithubPublishConfig,
+  config: { token: string } & Partial<GithubSettings>,
 ): Promise<{ ok: boolean; error?: string }> {
   cacheCatalog(catalog);
-  saveGithubSettings({
-    owner: config.owner,
-    repo: config.repo,
-    branch: config.branch,
-    path: config.path,
+  return publishSiteJson(catalog, {
+    token: config.token,
+    fileName: "catalog.json",
+    message: "Update House Hunt catalog",
+    settings: config,
   });
-  return publishJsonToGithub(catalog, config, "Update House Hunt catalog");
 }
 
-export { loadGithubSettings, saveGithubSettings };
+export { loadGithubSettings, saveGithubSettings } from "./lib/github";
 
 export function isAdminUnlocked(): boolean {
   return sessionStorage.getItem(AUTH_KEY) === "1";

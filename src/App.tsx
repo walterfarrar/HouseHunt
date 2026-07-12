@@ -295,16 +295,11 @@ export default function App() {
   };
 
   const doPublishLayout = async (token: string) => {
-    const result = await publishHouseLayout(house, token, {
-      owner: "walterfarrar",
-      repo: "HouseHunt",
-      branch: "main",
-      path: "public/house.json",
-    });
+    const result = await publishHouseLayout(house, token);
     if (result.ok) {
       setHouse((h) => touchHouse(h));
       setSyncStatus(
-        "Published to GitHub (public/house.json). Tell me to deploy, or run npm run deploy, then refresh the live site.",
+        "Published. The live GitHub Pages site has the new floor plan — refresh any device to load it.",
       );
     } else {
       setSyncStatus(result.error ?? "Publish failed.");
