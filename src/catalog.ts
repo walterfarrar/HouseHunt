@@ -114,7 +114,7 @@ export async function publishCatalogToGithub(
   return publishSiteJson(catalog, {
     token: config.token,
     fileName: "catalog.json",
-    message: "Update House Hunt catalog",
+    message: "Update House Inventory catalog",
     settings: config,
   });
 }

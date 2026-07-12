@@ -38,4 +38,4 @@ jobs:
           # already updated the live site and this build is slightly behind.
           keep_files: false
           force_orphan: false
-          commit_message: "Deploy House Hunt"
+          commit_message: "Deploy House Inventory"

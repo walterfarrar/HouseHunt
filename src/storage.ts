@@ -106,7 +106,7 @@ export async function publishHouseLayout(
   const result = await publishSiteJson(payload, {
     token,
     fileName: "house.json",
-    message: "Update House Hunt floor plan",
+    message: "Update House Inventory floor plan",
     settings,
   });
   if (result.ok) {

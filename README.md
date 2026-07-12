@@ -1,4 +1,4 @@
-# House Hunt
+# House Inventory
 
 iPad-friendly house map (GitHub Pages). Dad taps rooms and category lists — no typing. You manage those lists in **Admin**.
 

@@ -384,7 +384,7 @@ export default function App() {
     <div className={`app ${mode === "edit" ? "app--edit" : ""}`}>
       <header className="topbar">
         <div className="brand">
-          <p className="brand__name">House Hunt</p>
+          <p className="brand__name">House Inventory</p>
           <p className="brand__tag">Tap a room · log what you find</p>
         </div>
 
