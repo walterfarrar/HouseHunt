@@ -520,7 +520,7 @@ select {
 }
 
 .tap-tile {
-  min-height: 72px;
+  min-height: 96px;
   padding: 0.85rem 0.75rem;
   border: 3px solid color-mix(in srgb, var(--ink) 45%, transparent);
   border-radius: 14px;
@@ -531,6 +531,20 @@ select {
   line-height: 1.2;
   cursor: pointer;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.tap-tile__icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.tap-tile__label {
+  display: block;
 }
 
 .tap-tile:active {
@@ -606,6 +620,12 @@ select {
 
 .admin-list--wrap {
   max-height: none;
+}
+
+/* Items list holds emoji-picker popovers, so it must not clip them */
+.admin-list--items {
+  max-height: none;
+  overflow: visible;
 }
 
 .admin-list__btn {
@@ -729,10 +749,178 @@ select {
   border: 2px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
 
+.item__main {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.item__icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
 .item__spot {
   display: block;
   margin-top: 0.2rem;
   color: var(--ink-soft);
+}
+
+/* Category / item labels in Admin */
+.admin-list__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.admin-list__icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.admin-item-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.admin-icon-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-icon-field input {
+  flex: 1;
+  min-height: 48px;
+  padding: 0.55rem 0.7rem;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+}
+
+/* Emoji picker */
+.emoji-picker {
+  position: relative;
+  display: inline-flex;
+}
+
+.emoji-picker__trigger {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.emoji-picker__trigger:active {
+  transform: translateY(1px);
+}
+
+.emoji-picker__placeholder {
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.emoji-picker__glyph {
+  line-height: 1;
+}
+
+.emoji-picker__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  width: min(360px, 88vw);
+  max-height: min(420px, 70vh);
+  overflow: auto;
+  padding: 0.75rem;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.emoji-picker__custom {
+  display: flex;
+  gap: 0.4rem;
+  position: sticky;
+  top: 0;
+}
+
+.emoji-picker__custom input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0.4rem 0.6rem;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+}
+
+.emoji-picker__groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.emoji-picker__group-label {
+  margin: 0 0 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+}
+
+.emoji-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+  gap: 0.25rem;
+}
+
+.emoji-picker__option {
+  aspect-ratio: 1;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.emoji-picker__option:hover {
+  background: color-mix(in srgb, var(--accent) 12%, #fff);
+}
+
+.emoji-picker__option.is-active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, #fff);
+}
+
+.emoji-picker__clear {
+  align-self: flex-start;
+}
+
+.emoji-picker__empty {
+  margin: 0.25rem 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
 }
 
 .item__hit {

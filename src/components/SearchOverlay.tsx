@@ -50,7 +50,10 @@ export function SearchOverlay({ house, query, onClose, onOpenRoom }: Props) {
                     onClose();
                   }}
                 >
-                  <strong>{item.name}</strong>
+                  <strong>
+                    {item.icon && <span aria-hidden="true">{item.icon} </span>}
+                    {item.name}
+                  </strong>
                   <span>
                     {room.name}
                     {item.spot ? ` · ${item.spot}` : ""}

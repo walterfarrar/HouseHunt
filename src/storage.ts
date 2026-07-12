@@ -2,9 +2,8 @@ import { initialHouse } from "./data/initialLayout";
 import type { HouseData } from "./types";
 import {
   loadGithubSettings,
-  publishJsonToGithub,
-  saveGithubSettings,
-  type GithubPublishConfig,
+  publishSiteJson,
+  type GithubSettings,
 } from "./lib/github";
 
 const KEY = "house-hunt-v1";
@@ -101,16 +100,15 @@ export function mergeSharedLayout(local: HouseData, remote: HouseData): HouseDat
 export async function publishHouseLayout(
   house: HouseData,
   token: string,
-  settings = loadGithubSettings(),
+  settings: Partial<GithubSettings> = loadGithubSettings(),
 ): Promise<{ ok: boolean; error?: string }> {
   const payload = layoutForShare(touchHouse(house));
-  saveGithubSettings({ ...settings, path: settings.path || "public/house.json" });
-  const config: GithubPublishConfig = {
-    ...settings,
-    path: settings.path || "public/house.json",
+  const result = await publishSiteJson(payload, {
     token,
-  };
-  const result = await publishJsonToGithub(payload, config, "Update House Hunt floor plan");
+    fileName: "house.json",
+    message: "Update House Hunt floor plan",
+    settings,
+  });
   if (result.ok) {
     saveHouse({ ...house, updatedAt: payload.updatedAt, rooms: payload.rooms, doors: payload.doors });
   }

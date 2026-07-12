@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import type { Door, Room } from "../types";
 import { OUTSIDE_ID } from "../types";
 import type { OutsideEdge } from "../lib/doors";
-import { loadGithubSettings } from "../lib/github";
+import { loadGithubSettings, saveGithubSettings } from "../lib/github";
 import { ROOM_COLOR_OPTIONS, ROOM_COLORS } from "./RoomButton";
 
 type Props = {
@@ -51,7 +51,7 @@ export function EditToolbar({
   onDone,
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(() => loadGithubSettings().token);
   const [publishing, setPublishing] = useState(false);
   const gh = loadGithubSettings();
 
@@ -109,21 +109,25 @@ export function EditToolbar({
         <div className="edit-panel__form">
           <h3 className="edit-panel__sub">Share this house</h3>
           <p className="hint">
-            Localhost and GitHub Pages do not share browser storage. Publish your floor plan, then
-            run <code>npm run deploy</code> so every device loads it.
+            Publish updates the live GitHub Pages site immediately — refresh on any device to load
+            the new floor plan. Your token is saved in this browser.
           </p>
           <label className="field">
             <span>GitHub token (Contents: read/write)</span>
             <input
               type="password"
               value={token}
-              onChange={(e) => setToken(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                setToken(next);
+                saveGithubSettings({ token: next });
+              }}
               placeholder="ghp_…"
               autoComplete="off"
             />
           </label>
           <p className="hint">
-            Target: {gh.owner || "walterfarrar"}/{gh.repo || "HouseHunt"} — public/house.json
+            Target: {gh.owner || "walterfarrar"}/{gh.repo || "HouseHunt"} → live site + public/house.json
           </p>
           <button
             type="button"
@@ -135,7 +139,7 @@ export function EditToolbar({
               setPublishing(false);
             }}
           >
-            {publishing ? "Publishing…" : "Publish layout to GitHub"}
+            {publishing ? "Publishing…" : "Publish layout to live site"}
           </button>
           {syncStatus && <p className="hint hint--emphasis">{syncStatus}</p>}
         </div>

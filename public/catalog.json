@@ -4,166 +4,491 @@
     {
       "id": "tools",
       "name": "Tools",
+      "icon": "🔧",
       "items": [
-        "Screwdriver",
-        "Phillips screwdriver",
-        "Hammer",
-        "Pliers",
-        "Wrench",
-        "Tape measure",
-        "Level",
-        "Utility knife",
-        "Flashlight",
-        "Batteries",
-        "Duct tape",
-        "Painter's tape",
-        "Glue",
-        "Nails",
-        "Screws",
-        "Allen keys"
+        {
+          "name": "Screwdriver",
+          "icon": "🪛"
+        },
+        {
+          "name": "Phillips screwdriver",
+          "icon": "🪛"
+        },
+        {
+          "name": "Hammer",
+          "icon": "🔨"
+        },
+        {
+          "name": "Pliers",
+          "icon": "🛠️"
+        },
+        {
+          "name": "Wrench",
+          "icon": "🔧"
+        },
+        {
+          "name": "Tape measure",
+          "icon": "📏"
+        },
+        {
+          "name": "Level",
+          "icon": "📐"
+        },
+        {
+          "name": "Utility knife",
+          "icon": "🔪"
+        },
+        {
+          "name": "Flashlight",
+          "icon": "🔦"
+        },
+        {
+          "name": "Batteries",
+          "icon": "🔋"
+        },
+        {
+          "name": "Duct tape",
+          "icon": "🧻"
+        },
+        {
+          "name": "Painter's tape",
+          "icon": "🎨"
+        },
+        {
+          "name": "Glue",
+          "icon": "🧴"
+        },
+        {
+          "name": "Nails",
+          "icon": "📌"
+        },
+        {
+          "name": "Screws",
+          "icon": "🔩"
+        },
+        {
+          "name": "Allen keys",
+          "icon": "🔧"
+        }
       ]
     },
     {
       "id": "cables",
       "name": "Cables & Chargers",
+      "icon": "🔌",
       "items": [
-        "Phone charger",
-        "USB-C cable",
-        "Lightning cable",
-        "HDMI cable",
-        "Extension cord",
-        "Power strip",
-        "Laptop charger",
-        "Wall adapter",
-        "Ethernet cable",
-        "Audio cable",
-        "TV remote batteries"
+        {
+          "name": "Phone charger",
+          "icon": "🔌"
+        },
+        {
+          "name": "USB-C cable",
+          "icon": "🔌"
+        },
+        {
+          "name": "Lightning cable",
+          "icon": "🔌"
+        },
+        {
+          "name": "HDMI cable",
+          "icon": "🔌"
+        },
+        {
+          "name": "Extension cord",
+          "icon": "🔌"
+        },
+        {
+          "name": "Power strip",
+          "icon": "🔌"
+        },
+        {
+          "name": "Laptop charger",
+          "icon": "🔌"
+        },
+        {
+          "name": "Wall adapter",
+          "icon": "🔌"
+        },
+        {
+          "name": "Ethernet cable",
+          "icon": "🔌"
+        },
+        {
+          "name": "Audio cable",
+          "icon": "🔌"
+        },
+        {
+          "name": "TV remote batteries",
+          "icon": "🔋"
+        }
       ]
     },
     {
       "id": "kitchen",
       "name": "Kitchen",
+      "icon": "🍴",
       "items": [
-        "Can opener",
-        "Bottle opener",
-        "Scissors",
-        "Measuring cups",
-        "Mixing bowl",
-        "Cutting board",
-        "Tupperware",
-        "Aluminum foil",
-        "Plastic wrap",
-        "Ziploc bags",
-        "Coffee filters",
-        "Dish towels",
-        "Oven mitts"
+        {
+          "name": "Can opener",
+          "icon": "🥫"
+        },
+        {
+          "name": "Bottle opener",
+          "icon": "🍾"
+        },
+        {
+          "name": "Scissors",
+          "icon": "✂️"
+        },
+        {
+          "name": "Measuring cups",
+          "icon": "🥤"
+        },
+        {
+          "name": "Mixing bowl",
+          "icon": "🥣"
+        },
+        {
+          "name": "Cutting board",
+          "icon": "🔪"
+        },
+        {
+          "name": "Tupperware",
+          "icon": "🍱"
+        },
+        {
+          "name": "Aluminum foil",
+          "icon": "🧻"
+        },
+        {
+          "name": "Plastic wrap",
+          "icon": "🧻"
+        },
+        {
+          "name": "Ziploc bags",
+          "icon": "🛍️"
+        },
+        {
+          "name": "Coffee filters",
+          "icon": "☕"
+        },
+        {
+          "name": "Dish towels",
+          "icon": "🧻"
+        },
+        {
+          "name": "Oven mitts",
+          "icon": "🧤"
+        }
       ]
     },
     {
       "id": "electronics",
       "name": "Remotes & Electronics",
+      "icon": "📺",
       "items": [
-        "TV remote",
-        "Streaming remote",
-        "Spare remote",
-        "Headphones",
-        "Earbuds",
-        "Tablet",
-        "Camera",
-        "Thumb drive",
-        "SD card",
-        "Router",
-        "Modem"
+        {
+          "name": "TV remote",
+          "icon": "📺"
+        },
+        {
+          "name": "Streaming remote",
+          "icon": "📺"
+        },
+        {
+          "name": "Spare remote",
+          "icon": "📺"
+        },
+        {
+          "name": "Headphones",
+          "icon": "🎧"
+        },
+        {
+          "name": "Earbuds",
+          "icon": "🎧"
+        },
+        {
+          "name": "Tablet",
+          "icon": "📱"
+        },
+        {
+          "name": "Camera",
+          "icon": "📷"
+        },
+        {
+          "name": "Thumb drive",
+          "icon": "💾"
+        },
+        {
+          "name": "SD card",
+          "icon": "💾"
+        },
+        {
+          "name": "Router",
+          "icon": "📡"
+        },
+        {
+          "name": "Modem",
+          "icon": "📡"
+        }
       ]
     },
     {
       "id": "keys",
       "name": "Keys & Wallets",
+      "icon": "🔑",
       "items": [
-        "House keys",
-        "Car keys",
-        "Spare key",
-        "Wallet",
-        "Purse",
-        "Keychain",
-        "Garage remote",
-        "Mailbox key"
+        {
+          "name": "House keys",
+          "icon": "🔑"
+        },
+        {
+          "name": "Car keys",
+          "icon": "🔑"
+        },
+        {
+          "name": "Spare key",
+          "icon": "🗝️"
+        },
+        {
+          "name": "Wallet",
+          "icon": "👛"
+        },
+        {
+          "name": "Purse",
+          "icon": "👜"
+        },
+        {
+          "name": "Keychain",
+          "icon": "🔑"
+        },
+        {
+          "name": "Garage remote",
+          "icon": "📺"
+        },
+        {
+          "name": "Mailbox key",
+          "icon": "🗝️"
+        }
       ]
     },
     {
       "id": "meds",
       "name": "Meds & First Aid",
+      "icon": "💊",
       "items": [
-        "Prescription bottle",
-        "Pain reliever",
-        "Band-Aids",
-        "Antibiotic ointment",
-        "Thermometer",
-        "Ice pack",
-        "Heating pad",
-        "Vitamins",
-        "Pill organizer",
-        "First aid kit"
+        {
+          "name": "Prescription bottle",
+          "icon": "💊"
+        },
+        {
+          "name": "Pain reliever",
+          "icon": "💊"
+        },
+        {
+          "name": "Band-Aids",
+          "icon": "🩹"
+        },
+        {
+          "name": "Antibiotic ointment",
+          "icon": "🧴"
+        },
+        {
+          "name": "Thermometer",
+          "icon": "🌡️"
+        },
+        {
+          "name": "Ice pack",
+          "icon": "🧊"
+        },
+        {
+          "name": "Heating pad",
+          "icon": "🔥"
+        },
+        {
+          "name": "Vitamins",
+          "icon": "💊"
+        },
+        {
+          "name": "Pill organizer",
+          "icon": "💊"
+        },
+        {
+          "name": "First aid kit",
+          "icon": "🩺"
+        }
       ]
     },
     {
       "id": "cleaning",
       "name": "Cleaning",
+      "icon": "🧹",
       "items": [
-        "Paper towels",
-        "Trash bags",
-        "Disinfecting wipes",
-        "All-purpose cleaner",
-        "Glass cleaner",
-        "Vacuum",
-        "Broom",
-        "Dustpan",
-        "Mop",
-        "Laundry detergent",
-        "Dryer sheets"
+        {
+          "name": "Paper towels",
+          "icon": "🧻"
+        },
+        {
+          "name": "Trash bags",
+          "icon": "🗑️"
+        },
+        {
+          "name": "Disinfecting wipes",
+          "icon": "🧻"
+        },
+        {
+          "name": "All-purpose cleaner",
+          "icon": "🧴"
+        },
+        {
+          "name": "Glass cleaner",
+          "icon": "🧴"
+        },
+        {
+          "name": "Vacuum",
+          "icon": "🧹"
+        },
+        {
+          "name": "Broom",
+          "icon": "🧹"
+        },
+        {
+          "name": "Dustpan",
+          "icon": "🍳"
+        },
+        {
+          "name": "Mop",
+          "icon": "🧽"
+        },
+        {
+          "name": "Laundry detergent",
+          "icon": "🧴"
+        },
+        {
+          "name": "Dryer sheets",
+          "icon": "🧺"
+        }
       ]
     },
     {
       "id": "bulbs",
       "name": "Batteries & Bulbs",
+      "icon": "🔋",
       "items": [
-        "AA batteries",
-        "AAA batteries",
-        "9V battery",
-        "Light bulb",
-        "LED bulb",
-        "Night light"
+        {
+          "name": "AA batteries",
+          "icon": "🔋"
+        },
+        {
+          "name": "AAA batteries",
+          "icon": "🔋"
+        },
+        {
+          "name": "9V battery",
+          "icon": "🔋"
+        },
+        {
+          "name": "Light bulb",
+          "icon": "💡"
+        },
+        {
+          "name": "LED bulb",
+          "icon": "💡"
+        },
+        {
+          "name": "Night light",
+          "icon": "💡"
+        }
       ]
     },
     {
       "id": "paper",
       "name": "Paper & Mail",
+      "icon": "✉️",
       "items": [
-        "Mail",
-        "Package",
-        "Important papers",
-        "Notebook",
-        "Pens",
-        "Stamps",
-        "Envelopes",
-        "Tape",
-        "Scissors"
+        {
+          "name": "Mail",
+          "icon": "✉️"
+        },
+        {
+          "name": "Package",
+          "icon": "📦"
+        },
+        {
+          "name": "Important papers",
+          "icon": "📄"
+        },
+        {
+          "name": "Notebook",
+          "icon": "📓"
+        },
+        {
+          "name": "Pens",
+          "icon": "🖊️"
+        },
+        {
+          "name": "Stamps",
+          "icon": "📮"
+        },
+        {
+          "name": "Envelopes",
+          "icon": "✉️"
+        },
+        {
+          "name": "Tape",
+          "icon": "🧷"
+        },
+        {
+          "name": "Scissors",
+          "icon": "✂️"
+        }
       ]
     },
     {
       "id": "seasonal",
       "name": "Seasonal & Misc",
+      "icon": "☂️",
       "items": [
-        "Umbrella",
-        "Jacket",
-        "Gloves",
-        "Hat",
-        "Sunglasses",
-        "Sunscreen",
-        "Holiday decorations",
-        "Gift wrap",
-        "Shopping bags",
-        "Water bottle"
+        {
+          "name": "Umbrella",
+          "icon": "☂️"
+        },
+        {
+          "name": "Jacket",
+          "icon": "🧥"
+        },
+        {
+          "name": "Gloves",
+          "icon": "🧤"
+        },
+        {
+          "name": "Hat",
+          "icon": "🎩"
+        },
+        {
+          "name": "Sunglasses",
+          "icon": "🕶️"
+        },
+        {
+          "name": "Sunscreen",
+          "icon": "🧴"
+        },
+        {
+          "name": "Holiday decorations",
+          "icon": "🎁"
+        },
+        {
+          "name": "Gift wrap",
+          "icon": "🎁"
+        },
+        {
+          "name": "Shopping bags",
+          "icon": "🛍️"
+        },
+        {
+          "name": "Water bottle",
+          "icon": "🧴"
+        }
       ]
     }
   ],

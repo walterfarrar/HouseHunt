@@ -41,16 +41,29 @@ export type Item = {
   id: string;
   roomId: string;
   name: string;
+  /** Emoji/icon shown next to the logged item */
+  icon?: string;
   categoryId?: string;
   spot?: string;
   updatedAt: string;
 };
 
+/** A pickable thing in the catalog. `icon` is an emoji (or any short glyph). */
+export type CatalogItem = {
+  name: string;
+  icon?: string;
+};
+
 export type CatalogCategory = {
   id: string;
   name: string;
-  items: string[];
+  /** Emoji/icon representing the whole category */
+  icon?: string;
+  items: CatalogItem[];
 };
+
+/** JSON on disk may still store items as plain strings (legacy) or objects. */
+export type CatalogItemInput = string | CatalogItem;
 
 export type Catalog = {
   version: 1;
