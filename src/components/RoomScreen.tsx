@@ -39,9 +39,20 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
   return (
     <div className="room-screen">
       <header className="room-screen__head">
-        <button type="button" className="btn btn--back" onClick={onBack}>
-          ← Back to map
-        </button>
+        <div className="room-screen__nav">
+          <button type="button" className="btn btn--back" onClick={onBack}>
+            ← Map
+          </button>
+          {category && (
+            <button
+              type="button"
+              className="btn btn--back"
+              onClick={() => setOpenCategoryId(null)}
+            >
+              ← Categories
+            </button>
+          )}
+        </div>
         <h1>{room.name}</h1>
         <p className="lede">
           {category ? "Tap what you found" : "Tap a category, then tap what you found"}
@@ -83,15 +94,6 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
 
       {category && (
         <div className="find-flow">
-          <div className="find-flow__nav">
-            <button
-              type="button"
-              className="btn btn--back"
-              onClick={() => setOpenCategoryId(null)}
-            >
-              ← Categories
-            </button>
-          </div>
           <h2 className="find-flow__title">
             {category.icon && <span aria-hidden="true">{category.icon} </span>}
             {category.name}
