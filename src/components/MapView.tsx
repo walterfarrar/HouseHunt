@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { AppMode, Door, Room, Selection } from "../types";
-import { CELL, MIN_ROOM, roomBounds, snap } from "../lib/geometry";
+import { CELL, MIN_ROOM, contentBounds, snap } from "../lib/geometry";
 import { RoomButton } from "./RoomButton";
 import { DoorMarker } from "./DoorMarker";
 
@@ -39,6 +39,8 @@ type DoorDrag = {
 };
 
 type DragState = RoomDrag | DoorDrag;
+
+type Fit = { scale: number; tx: number; ty: number };
 
 function applyResize(orig: Room, kind: Exclude<DragKind, "move">, dx: number, dy: number): Room {
   switch (kind) {
@@ -79,7 +81,7 @@ export function MapView({
   onSelect,
   onRoomPickedForDoor,
 }: Props) {
-  const liveBounds = roomBounds(rooms);
+  const liveBounds = contentBounds(rooms, doors);
 
   const originRef = useRef({ minX: liveBounds.minX, minY: liveBounds.minY });
   if (mode !== "edit") {
@@ -101,18 +103,53 @@ export function MapView({
   const onChangeDoorsRef = useRef(onChangeDoors);
   onChangeDoorsRef.current = onChangeDoors;
 
-  const [panning, setPanning] = useState(false);
-  const panOrigin = useRef<{ x: number; y: number; scrollLeft: number; scrollTop: number } | null>(
-    null,
-  );
-  const scroller = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [fit, setFit] = useState<Fit>({ scale: 1, tx: 0, ty: 0 });
+  const fitRef = useRef(fit);
+  fitRef.current = fit;
+  const draggingRef = useRef(false);
+
+  const recomputeFit = useCallback(() => {
+    if (draggingRef.current) return;
+    const el = viewportRef.current;
+    if (!el) return;
+    const vw = el.clientWidth;
+    const vh = el.clientHeight;
+    if (vw < 1 || vh < 1) return;
+
+    const bounds = contentBounds(roomsRef.current, doorsRef.current);
+    const origin = mode === "edit" ? originRef.current : { minX: bounds.minX, minY: bounds.minY };
+    const cw = Math.max(bounds.maxX - origin.minX, 1) * CELL;
+    const ch = Math.max(bounds.maxY - origin.minY, 1) * CELL;
+    const scale = Math.min(vw / cw, vh / ch);
+    const tx = (vw - cw * scale) / 2;
+    const ty = (vh - ch * scale) / 2;
+    setFit({ scale, tx, ty });
+  }, [mode]);
+
+  useLayoutEffect(() => {
+    recomputeFit();
+  }, [recomputeFit, rooms, doors, mode, canvasWidth, canvasHeight]);
+
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => recomputeFit());
+    ro.observe(el);
+    window.addEventListener("orientationchange", recomputeFit);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("orientationchange", recomputeFit);
+    };
+  }, [recomputeFit]);
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
       const d = drag.current;
       if (d) {
-        const dx = (e.clientX - d.startX) / CELL;
-        const dy = (e.clientY - d.startY) / CELL;
+        const unit = CELL * fitRef.current.scale;
+        const dx = (e.clientX - d.startX) / unit;
+        const dy = (e.clientY - d.startY) / unit;
         if (d.target === "room") {
           onChangeRoomsRef.current(
             roomsRef.current.map((r) => {
@@ -134,18 +171,13 @@ export function MapView({
         }
         return;
       }
-      if (panOrigin.current && scroller.current) {
-        const pdx = e.clientX - panOrigin.current.x;
-        const pdy = e.clientY - panOrigin.current.y;
-        scroller.current.scrollLeft = panOrigin.current.scrollLeft - pdx;
-        scroller.current.scrollTop = panOrigin.current.scrollTop - pdy;
-      }
     };
 
     const onUp = () => {
+      const wasDragging = drag.current != null;
       drag.current = null;
-      panOrigin.current = null;
-      setPanning(false);
+      draggingRef.current = false;
+      if (wasDragging) recomputeFit();
     };
 
     window.addEventListener("pointermove", onMove);
@@ -156,7 +188,7 @@ export function MapView({
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
     };
-  }, []);
+  }, [recomputeFit]);
 
   const onRoomPointerDown = useCallback(
     (e: React.PointerEvent, room: Room, kind: DragKind) => {
@@ -170,6 +202,7 @@ export function MapView({
       }
 
       onSelect({ kind: "room", id: room.id });
+      draggingRef.current = true;
       drag.current = {
         target: "room",
         id: room.id,
@@ -186,6 +219,7 @@ export function MapView({
     (e: React.PointerEvent, door: Door) => {
       if (mode !== "edit" || placingDoor) return;
       onSelect({ kind: "door", id: door.id });
+      draggingRef.current = true;
       drag.current = {
         target: "door",
         id: door.id,
@@ -199,30 +233,24 @@ export function MapView({
 
   return (
     <div
-      className={`map-scroller ${mode === "edit" ? "map-scroller--edit" : ""} ${panning ? "map-scroller--panning" : ""} ${placingDoor ? "map-scroller--placing-door" : ""}`}
-      ref={scroller}
+      className={`map-viewport ${mode === "edit" ? "map-viewport--edit" : ""} ${placingDoor ? "map-viewport--placing-door" : ""}`}
+      ref={viewportRef}
       onPointerDown={(e) => {
         if (mode === "edit" && (e.target as HTMLElement).classList.contains("map-canvas")) {
           if (!placingDoor) onSelect(null);
-          if (scroller.current) {
-            setPanning(true);
-            panOrigin.current = {
-              x: e.clientX,
-              y: e.clientY,
-              scrollLeft: scroller.current.scrollLeft,
-              scrollTop: scroller.current.scrollTop,
-            };
-          }
         }
       }}
     >
       <div
         className="map-canvas"
-        style={{ width: canvasWidth, height: canvasHeight }}
+        style={{
+          width: canvasWidth,
+          height: canvasHeight,
+          transform: `translate(${fit.tx}px, ${fit.ty}px) scale(${fit.scale})`,
+        }}
         role="group"
         aria-label="House map"
       >
-        <div className="map-grid" aria-hidden />
         {rooms.map((room) => (
           <RoomButton
             key={room.id}

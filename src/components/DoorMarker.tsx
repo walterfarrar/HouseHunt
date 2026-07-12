@@ -1,9 +1,9 @@
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import type { AppMode, Door } from "../types";
 import { OUTSIDE_ID } from "../types";
-import { CELL } from "../lib/geometry";
+import { CELL, DOOR_THICK_PX } from "../lib/geometry";
 
-const THICK = 16; // px visual thickness of the door opening
+const THICK = DOOR_THICK_PX;
 
 type Props = {
   door: Door;
