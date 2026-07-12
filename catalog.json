@@ -11,16 +11,8 @@
           "icon": "🪛"
         },
         {
-          "name": "Phillips screwdriver",
-          "icon": "🪛"
-        },
-        {
           "name": "Hammer",
           "icon": "🔨"
-        },
-        {
-          "name": "Pliers",
-          "icon": "🛠️"
         },
         {
           "name": "Wrench",
@@ -33,10 +25,6 @@
         {
           "name": "Level",
           "icon": "📐"
-        },
-        {
-          "name": "Utility knife",
-          "icon": "🔪"
         },
         {
           "name": "Flashlight",
@@ -86,10 +74,6 @@
           "icon": "🔌"
         },
         {
-          "name": "Lightning cable",
-          "icon": "🔌"
-        },
-        {
           "name": "HDMI cable",
           "icon": "🔌"
         },
@@ -102,24 +86,8 @@
           "icon": "🔌"
         },
         {
-          "name": "Laptop charger",
-          "icon": "🔌"
-        },
-        {
-          "name": "Wall adapter",
-          "icon": "🔌"
-        },
-        {
           "name": "Ethernet cable",
           "icon": "🔌"
-        },
-        {
-          "name": "Audio cable",
-          "icon": "🔌"
-        },
-        {
-          "name": "TV remote batteries",
-          "icon": "🔋"
         }
       ]
     },
@@ -137,16 +105,8 @@
           "icon": "🍾"
         },
         {
-          "name": "Scissors",
-          "icon": "✂️"
-        },
-        {
           "name": "Measuring cups",
           "icon": "🥤"
-        },
-        {
-          "name": "Mixing bowl",
-          "icon": "🥣"
         },
         {
           "name": "Cutting board",
@@ -179,6 +139,10 @@
         {
           "name": "Oven mitts",
           "icon": "🧤"
+        },
+        {
+          "name": "Cup",
+          "icon": "🥛"
         }
       ]
     },
@@ -192,19 +156,7 @@
           "icon": "📺"
         },
         {
-          "name": "Streaming remote",
-          "icon": "📺"
-        },
-        {
-          "name": "Spare remote",
-          "icon": "📺"
-        },
-        {
           "name": "Headphones",
-          "icon": "🎧"
-        },
-        {
-          "name": "Earbuds",
           "icon": "🎧"
         },
         {
@@ -243,14 +195,6 @@
           "icon": "🔑"
         },
         {
-          "name": "Car keys",
-          "icon": "🔑"
-        },
-        {
-          "name": "Spare key",
-          "icon": "🗝️"
-        },
-        {
           "name": "Wallet",
           "icon": "👛"
         },
@@ -265,10 +209,6 @@
         {
           "name": "Garage remote",
           "icon": "📺"
-        },
-        {
-          "name": "Mailbox key",
-          "icon": "🗝️"
         }
       ]
     },
@@ -279,10 +219,6 @@
       "items": [
         {
           "name": "Prescription bottle",
-          "icon": "💊"
-        },
-        {
-          "name": "Pain reliever",
           "icon": "💊"
         },
         {
@@ -437,22 +373,14 @@
         {
           "name": "Tape",
           "icon": "🧷"
-        },
-        {
-          "name": "Scissors",
-          "icon": "✂️"
         }
       ]
     },
     {
       "id": "seasonal",
-      "name": "Seasonal & Misc",
-      "icon": "☂️",
+      "name": "Clothing",
+      "icon": "👖",
       "items": [
-        {
-          "name": "Umbrella",
-          "icon": "☂️"
-        },
         {
           "name": "Jacket",
           "icon": "🧥"
@@ -470,24 +398,20 @@
           "icon": "🕶️"
         },
         {
-          "name": "Sunscreen",
-          "icon": "🧴"
+          "name": "Shirt",
+          "icon": "👔"
         },
         {
-          "name": "Holiday decorations",
-          "icon": "🎁"
+          "name": "Pants",
+          "icon": "👖"
         },
         {
-          "name": "Gift wrap",
-          "icon": "🎁"
+          "name": "Shoes",
+          "icon": "👟"
         },
         {
-          "name": "Shopping bags",
-          "icon": "🛍️"
-        },
-        {
-          "name": "Water bottle",
-          "icon": "🧴"
+          "name": "Boots",
+          "icon": "🥾"
         }
       ]
     }
