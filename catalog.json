@@ -11,8 +11,16 @@
           "icon": "🪛"
         },
         {
+          "name": "Phillips screwdriver",
+          "icon": "🪛"
+        },
+        {
           "name": "Hammer",
           "icon": "🔨"
+        },
+        {
+          "name": "Pliers",
+          "icon": "🛠️"
         },
         {
           "name": "Wrench",
@@ -25,6 +33,10 @@
         {
           "name": "Level",
           "icon": "📐"
+        },
+        {
+          "name": "Utility knife",
+          "icon": "🔪"
         },
         {
           "name": "Flashlight",
@@ -125,6 +137,14 @@
           "icon": "🍾"
         },
         {
+          "name": "Scissors",
+          "icon": "✂️"
+        },
+        {
+          "name": "Measuring cups",
+          "icon": "🥤"
+        },
+        {
           "name": "Mixing bowl",
           "icon": "🥣"
         },
@@ -135,6 +155,22 @@
         {
           "name": "Tupperware",
           "icon": "🍱"
+        },
+        {
+          "name": "Aluminum foil",
+          "icon": "🧻"
+        },
+        {
+          "name": "Plastic wrap",
+          "icon": "🧻"
+        },
+        {
+          "name": "Ziploc bags",
+          "icon": "🛍️"
+        },
+        {
+          "name": "Coffee filters",
+          "icon": "☕"
         },
         {
           "name": "Dish towels",
@@ -156,7 +192,19 @@
           "icon": "📺"
         },
         {
+          "name": "Streaming remote",
+          "icon": "📺"
+        },
+        {
+          "name": "Spare remote",
+          "icon": "📺"
+        },
+        {
           "name": "Headphones",
+          "icon": "🎧"
+        },
+        {
+          "name": "Earbuds",
           "icon": "🎧"
         },
         {
@@ -174,6 +222,14 @@
         {
           "name": "SD card",
           "icon": "💾"
+        },
+        {
+          "name": "Router",
+          "icon": "📡"
+        },
+        {
+          "name": "Modem",
+          "icon": "📡"
         }
       ]
     },
@@ -223,6 +279,10 @@
       "items": [
         {
           "name": "Prescription bottle",
+          "icon": "💊"
+        },
+        {
+          "name": "Pain reliever",
           "icon": "💊"
         },
         {
@@ -428,33 +488,6 @@
         {
           "name": "Water bottle",
           "icon": "🧴"
-        }
-      ]
-    },
-    {
-      "id": "clothing",
-      "name": "Clothing",
-      "icon": "👖",
-      "items": [
-        {
-          "name": "Hat",
-          "icon": "🎩"
-        },
-        {
-          "name": "Shirt",
-          "icon": "👕"
-        },
-        {
-          "name": "Pants",
-          "icon": "👖"
-        },
-        {
-          "name": "Shoes",
-          "icon": "👟"
-        },
-        {
-          "name": "Coat",
-          "icon": "🧥"
         }
       ]
     }
