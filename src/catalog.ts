@@ -1,7 +1,7 @@
 import { defaultCatalog } from "./data/defaultCatalog";
 import { guessCategoryIcon, guessItemIcon } from "./data/emoji";
 import type { Catalog, CatalogCategory, CatalogItem } from "./types";
-import { publishSiteJson, type GithubSettings } from "./lib/github";
+import { fetchRepoJson, publishSiteJson, type GithubSettings } from "./lib/github";
 
 const CATALOG_KEY = "house-hunt-catalog-v1";
 const AUTH_KEY = "house-hunt-admin-ok";
@@ -72,8 +72,19 @@ export function cacheCatalog(catalog: Catalog): void {
   localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog));
 }
 
-/** Load shared lists from catalog.json on GitHub Pages (or local public/). */
+/**
+ * Load the shared lists. Reads from the GitHub repo API first so a Publish on
+ * one device shows up on every other device immediately (the API isn't cached
+ * for 10 min like the Pages URL, and isn't overwritten by site deploys). Falls
+ * back to the copy bundled into the deployed site, then to the local cache.
+ */
 export async function fetchCatalog(): Promise<Catalog> {
+  const fromRepo = normalizeCatalog(await fetchRepoJson("catalog.json"));
+  if (fromRepo) {
+    cacheCatalog(fromRepo);
+    return fromRepo;
+  }
+
   try {
     const url = `${import.meta.env.BASE_URL}catalog.json?t=${Date.now()}`;
     const res = await fetch(url, { headers: { Accept: "application/json" }, cache: "no-store" });

@@ -67,6 +67,38 @@ export function clearGithubToken(): void {
   saveGithubSettings({ token: "" });
 }
 
+/**
+ * Read a JSON file straight from the GitHub repo (source branch) via the
+ * Contents API.
+ *
+ * This is the source of truth for shared data (catalog / floor plan). Unlike
+ * fetching from the Pages URL, it:
+ *  - reflects a Publish instantly (no Pages build + no 10-min CDN cache), and
+ *  - is never clobbered by a site deploy (deploys touch the Pages branch, not
+ *    `public/*.json` on the source branch).
+ *
+ * Works unauthenticated for public repos and sends `*` CORS, so the browser can
+ * call it directly. Returns `null` on any failure (offline, rate-limit, 404) so
+ * callers can fall back to the bundled/Pages copy.
+ */
+export async function fetchRepoJson(fileName: string): Promise<unknown | null> {
+  const { owner, repo, branch } = loadGithubSettings();
+  if (!owner || !repo) return null;
+  const url =
+    `https://api.github.com/repos/${owner}/${repo}/contents/public/${fileName}` +
+    `?ref=${encodeURIComponent(branch)}&t=${Date.now()}`;
+  try {
+    const res = await fetch(url, {
+      headers: { Accept: "application/vnd.github.raw" },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
 /** Write (or update) a single file on a GitHub branch via the Contents API. */
 export async function publishJsonToGithub(
   data: unknown,

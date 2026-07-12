@@ -1,6 +1,7 @@
 import { initialHouse } from "./data/initialLayout";
 import type { HouseData } from "./types";
 import {
+  fetchRepoJson,
   loadGithubSettings,
   publishSiteJson,
   type GithubSettings,
@@ -66,8 +67,17 @@ export function exportHouseJson(data: HouseData): string {
   return JSON.stringify(layoutForShare(touchHouse(data)), null, 2);
 }
 
-/** Load shared floor plan from house.json on GitHub Pages. */
+/**
+ * Load the shared floor plan. Reads from the GitHub repo API first so a Publish
+ * propagates to other devices immediately (no Pages CDN cache, and it survives
+ * site deploys). Falls back to the copy bundled into the deployed site.
+ */
 export async function fetchSharedHouse(): Promise<HouseData | null> {
+  const fromRepo = await fetchRepoJson("house.json");
+  if (fromRepo && typeof fromRepo === "object") {
+    return normalizeHouse(fromRepo as Partial<HouseData>);
+  }
+
   try {
     const url = `${import.meta.env.BASE_URL}house.json?t=${Date.now()}`;
     const res = await fetch(url, { headers: { Accept: "application/json" }, cache: "no-store" });
