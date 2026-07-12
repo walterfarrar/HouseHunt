@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "tools",
+      "name": "Tools",
+      "items": [
+        "Screwdriver",
+        "Phillips screwdriver",
+        "Hammer",
+        "Pliers",
+        "Wrench",
+        "Tape measure",
+        "Level",
+        "Utility knife",
+        "Flashlight",
+        "Batteries",
+        "Duct tape",
+        "Painter's tape",
+        "Glue",
+        "Nails",
+        "Screws",
+        "Allen keys"
+      ]
+    },
+    {
+      "id": "cables",
+      "name": "Cables & Chargers",
+      "items": [
+        "Phone charger",
+        "USB-C cable",
+        "Lightning cable",
+        "HDMI cable",
+        "Extension cord",
+        "Power strip",
+        "Laptop charger",
+        "Wall adapter",
+        "Ethernet cable",
+        "Audio cable",
+        "TV remote batteries"
+      ]
+    },
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "items": [
+        "Can opener",
+        "Bottle opener",
+        "Scissors",
+        "Measuring cups",
+        "Mixing bowl",
+        "Cutting board",
+        "Tupperware",
+        "Aluminum foil",
+        "Plastic wrap",
+        "Ziploc bags",
+        "Coffee filters",
+        "Dish towels",
+        "Oven mitts"
+      ]
+    },
+    {
+      "id": "electronics",
+      "name": "Remotes & Electronics",
+      "items": [
+        "TV remote",
+        "Streaming remote",
+        "Spare remote",
+        "Headphones",
+        "Earbuds",
+        "Tablet",
+        "Camera",
+        "Thumb drive",
+        "SD card",
+        "Router",
+        "Modem"
+      ]
+    },
+    {
+      "id": "keys",
+      "name": "Keys & Wallets",
+      "items": [
+        "House keys",
+        "Car keys",
+        "Spare key",
+        "Wallet",
+        "Purse",
+        "Keychain",
+        "Garage remote",
+        "Mailbox key"
+      ]
+    },
+    {
+      "id": "meds",
+      "name": "Meds & First Aid",
+      "items": [
+        "Prescription bottle",
+        "Pain reliever",
+        "Band-Aids",
+        "Antibiotic ointment",
+        "Thermometer",
+        "Ice pack",
+        "Heating pad",
+        "Vitamins",
+        "Pill organizer",
+        "First aid kit"
+      ]
+    },
+    {
+      "id": "cleaning",
+      "name": "Cleaning",
+      "items": [
+        "Paper towels",
+        "Trash bags",
+        "Disinfecting wipes",
+        "All-purpose cleaner",
+        "Glass cleaner",
+        "Vacuum",
+        "Broom",
+        "Dustpan",
+        "Mop",
+        "Laundry detergent",
+        "Dryer sheets"
+      ]
+    },
+    {
+      "id": "bulbs",
+      "name": "Batteries & Bulbs",
+      "items": [
+        "AA batteries",
+        "AAA batteries",
+        "9V battery",
+        "Light bulb",
+        "LED bulb",
+        "Night light"
+      ]
+    },
+    {
+      "id": "paper",
+      "name": "Paper & Mail",
+      "items": [
+        "Mail",
+        "Package",
+        "Important papers",
+        "Notebook",
+        "Pens",
+        "Stamps",
+        "Envelopes",
+        "Tape",
+        "Scissors"
+      ]
+    },
+    {
+      "id": "seasonal",
+      "name": "Seasonal & Misc",
+      "items": [
+        "Umbrella",
+        "Jacket",
+        "Gloves",
+        "Hat",
+        "Sunglasses",
+        "Sunscreen",
+        "Holiday decorations",
+        "Gift wrap",
+        "Shopping bags",
+        "Water bottle"
+      ]
+    }
+  ],
+  "spots": [
+    "Shelf",
+    "Drawer",
+    "Cabinet",
+    "Counter",
+    "Table",
+    "Desk",
+    "Floor",
+    "Closet",
+    "Box",
+    "Hook",
+    "Near door",
+    "Other"
+  ]
+}

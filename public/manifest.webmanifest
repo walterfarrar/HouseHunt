@@ -1,0 +1,17 @@
+{
+  "name": "House Hunt",
+  "short_name": "House Hunt",
+  "description": "Map the house and log where things are.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#e8efe8",
+  "theme_color": "#2f6b4f",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
