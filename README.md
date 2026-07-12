@@ -13,11 +13,14 @@ Open `http://localhost:5277`.
 
 ## GitHub Pages
 
+Live site: **https://walterfarrar.github.io/HouseHunt/**
+
 ```bash
 npm run build
+npx gh-pages -d dist
 ```
 
-Publish the `dist/` folder to GitHub Pages (or use Actions). `base` is `./` so project sites work.
+Repo: https://github.com/walterfarrar/HouseHunt
 
 Shared item lists live in [`public/catalog.json`](public/catalog.json) and are copied into the build.
 
