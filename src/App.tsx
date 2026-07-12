@@ -362,6 +362,7 @@ export default function App() {
                   id: newId(),
                   roomId: activeRoom.id,
                   name,
+                  icon: meta.icon,
                   categoryId: meta.categoryId,
                   spot: meta.spot,
                   updatedAt: new Date().toISOString(),

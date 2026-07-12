@@ -5,15 +5,15 @@ type Step =
   | { phase: "home" }
   | { phase: "category" }
   | { phase: "item"; categoryId: string }
-  | { phase: "spot"; categoryId: string; itemName: string }
-  | { phase: "done"; itemName: string; spot?: string };
+  | { phase: "spot"; categoryId: string; itemName: string; itemIcon?: string }
+  | { phase: "done"; itemName: string; itemIcon?: string; spot?: string };
 
 type Props = {
   room: Room;
   items: Item[];
   catalog: Catalog;
   onBack: () => void;
-  onAddItem: (name: string, meta: { categoryId?: string; spot?: string }) => void;
+  onAddItem: (name: string, meta: { categoryId?: string; spot?: string; icon?: string }) => void;
   onDeleteItem: (id: string) => void;
 };
 
@@ -27,9 +27,9 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
 
   const cancelFind = () => setStep({ phase: "home" });
 
-  const save = (itemName: string, categoryId: string, spot?: string) => {
-    onAddItem(itemName, { categoryId, spot });
-    setStep({ phase: "done", itemName, spot });
+  const save = (itemName: string, categoryId: string, spot?: string, icon?: string) => {
+    onAddItem(itemName, { categoryId, spot, icon });
+    setStep({ phase: "done", itemName, itemIcon: icon, spot });
   };
 
   return (
@@ -64,7 +64,12 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
                 className="tap-tile"
                 onClick={() => setStep({ phase: "item", categoryId: cat.id })}
               >
-                {cat.name}
+                {cat.icon && (
+                  <span className="tap-tile__icon" aria-hidden="true">
+                    {cat.icon}
+                  </span>
+                )}
+                <span className="tap-tile__label">{cat.name}</span>
               </button>
             ))}
           </div>
@@ -82,18 +87,31 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
               ← Categories
             </button>
           </div>
-          <h2 className="find-flow__title">{category.name}</h2>
+          <h2 className="find-flow__title">
+            {category.icon && <span aria-hidden="true">{category.icon} </span>}
+            {category.name}
+          </h2>
           <div className="tap-grid">
-            {category.items.map((name) => (
+            {category.items.map((item) => (
               <button
-                key={name}
+                key={item.name}
                 type="button"
                 className="tap-tile"
                 onClick={() =>
-                  setStep({ phase: "spot", categoryId: category.id, itemName: name })
+                  setStep({
+                    phase: "spot",
+                    categoryId: category.id,
+                    itemName: item.name,
+                    itemIcon: item.icon,
+                  })
                 }
               >
-                {name}
+                {item.icon && (
+                  <span className="tap-tile__icon" aria-hidden="true">
+                    {item.icon}
+                  </span>
+                )}
+                <span className="tap-tile__label">{item.name}</span>
               </button>
             ))}
           </div>
@@ -113,7 +131,8 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
           </div>
           <h2 className="find-flow__title">Where in the room?</h2>
           <p className="lede">
-            Logging: <strong>{step.itemName}</strong>
+            Logging: {step.itemIcon && <span aria-hidden="true">{step.itemIcon} </span>}
+            <strong>{step.itemName}</strong>
           </p>
           <div className="tap-grid">
             {catalog.spots.map((spot) => (
@@ -121,7 +140,7 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
                 key={spot}
                 type="button"
                 className="tap-tile"
-                onClick={() => save(step.itemName, step.categoryId, spot)}
+                onClick={() => save(step.itemName, step.categoryId, spot, step.itemIcon)}
               >
                 {spot}
               </button>
@@ -129,7 +148,7 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
             <button
               type="button"
               className="tap-tile tap-tile--muted"
-              onClick={() => save(step.itemName, step.categoryId)}
+              onClick={() => save(step.itemName, step.categoryId, undefined, step.itemIcon)}
             >
               Skip — just save it
             </button>
@@ -141,6 +160,7 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
         <div className="find-flow find-flow--done">
           <p className="find-flow__thanks">Got it — thanks!</p>
           <p className="lede">
+            {step.itemIcon && <span aria-hidden="true">{step.itemIcon} </span>}
             <strong>{step.itemName}</strong>
             {step.spot ? ` · ${step.spot}` : ""}
           </p>
@@ -158,9 +178,16 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
           {items.length === 0 && <li className="item-list__empty">Nothing logged here yet.</li>}
           {items.map((item) => (
             <li key={item.id} className="item">
-              <div>
-                <strong>{item.name}</strong>
-                {item.spot && <span className="item__spot">{item.spot}</span>}
+              <div className="item__main">
+                {item.icon && (
+                  <span className="item__icon" aria-hidden="true">
+                    {item.icon}
+                  </span>
+                )}
+                <div>
+                  <strong>{item.name}</strong>
+                  {item.spot && <span className="item__spot">{item.spot}</span>}
+                </div>
               </div>
               <button
                 type="button"

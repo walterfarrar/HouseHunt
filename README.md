@@ -28,7 +28,7 @@ Shared item lists live in [`public/catalog.json`](public/catalog.json) and are c
 
 1. Open **Admin** (or `#admin`)
 2. Unlock with the admin password (`changeme` by default, or set `VITE_ADMIN_PASSWORD` in `.env` before build)
-3. Edit categories / items / spots
+3. Edit categories / items / spots — every category and item can have an emoji **icon**. Defaults ship with sensible icons, new items auto-pick a matching one, and you can tap any icon to choose from the palette or paste your own emoji (any emoji from your phone/tablet keyboard works)
 4. Either:
    - **Download JSON** and commit it as `public/catalog.json`, or
    - **Publish to GitHub** with a fine-grained PAT (Contents read/write) so Pages rebuilds and Dad’s iPad gets the lists on refresh
