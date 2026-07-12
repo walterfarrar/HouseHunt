@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-12T22:29:54.568Z",
+  "updatedAt": "2026-07-12T22:30:20.004Z",
   "rooms": [
     {
       "id": "r-c",
@@ -60,7 +60,7 @@
       "name": "Living Room",
       "x": 14.75,
       "y": 2.75,
-      "w": 2.5,
+      "w": 2.75,
       "h": 3,
       "accent": "olive"
     },
