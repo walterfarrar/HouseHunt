@@ -17,6 +17,7 @@ import {
 type Props = {
   catalog: Catalog;
   onCatalogChange: (catalog: Catalog) => void;
+  onRefresh?: () => void;
   onBack: () => void;
   onEditMap?: () => void;
   onLock?: () => void;
@@ -31,7 +32,7 @@ function newCategoryId(name: string) {
   );
 }
 
-export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLock }: Props) {
+export function AdminScreen({ catalog, onCatalogChange, onRefresh, onBack, onEditMap, onLock }: Props) {
   const [unlocked, setUnlocked] = useState(() => isAdminUnlocked());
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
@@ -256,6 +257,19 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
           </form>
         )}
       </section>
+
+      {onRefresh && (
+        <section className="admin-card">
+          <h2>Update this device</h2>
+          <p className="hint">
+            Pull the latest lists, floor plan, and app changes published from other devices —
+            no need to remove and re-add the home screen app.
+          </p>
+          <button type="button" className="btn btn--primary" onClick={onRefresh}>
+            ↻ Refresh & get latest
+          </button>
+        </section>
+      )}
 
       {unlocked && (
         <>

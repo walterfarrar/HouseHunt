@@ -114,6 +114,15 @@ export default function App() {
     window.location.hash = "admin";
   };
 
+  // Hard-refresh the app (and shared lists) past any home-screen/PWA cache by
+  // reloading at a unique URL. On boot the app re-fetches catalog.json and
+  // house.json (both cache-busted), so this pulls changes published elsewhere.
+  const refreshApp = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("u", Date.now().toString(36));
+    window.location.replace(url.toString());
+  };
+
   const leaveAdmin = () => {
     setView({ screen: "map" });
     if (window.location.hash === "#admin") {
@@ -324,6 +333,7 @@ export default function App() {
             onCatalogChange={(next) => {
               setCatalog(next);
             }}
+            onRefresh={refreshApp}
             onBack={leaveAdmin}
             onEditMap={() => {
               leaveAdmin();
@@ -403,6 +413,14 @@ export default function App() {
                 onFocus={() => setSearchOpen(true)}
               />
             </label>
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={refreshApp}
+              title="Get the latest lists and app updates from other devices"
+            >
+              ↻ Refresh
+            </button>
             <button type="button" className="btn btn--ghost" onClick={openAdmin}>
               Admin
             </button>
