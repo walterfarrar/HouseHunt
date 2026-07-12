@@ -60,6 +60,8 @@ export type Catalog = {
 
 export type HouseData = {
   version: 1;
+  /** ISO timestamp — used to sync layout between devices via house.json */
+  updatedAt?: string;
   rooms: Room[];
   doors: Door[];
   items: Item[];

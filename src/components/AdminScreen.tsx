@@ -4,9 +4,11 @@ import {
   checkAdminPassword,
   downloadCatalogJson,
   isAdminUnlocked,
+  loadGithubSettings,
   lockAdmin,
   publishCatalogToGithub,
   saveCatalogLocal,
+  saveGithubSettings,
   unlockAdmin,
 } from "../catalog";
 
@@ -17,25 +19,6 @@ type Props = {
   onEditMap?: () => void;
   onLock?: () => void;
 };
-
-const GH_SETTINGS_KEY = "house-hunt-github-settings";
-
-function loadGithubSettings() {
-  try {
-    const raw = localStorage.getItem(GH_SETTINGS_KEY);
-    if (!raw) {
-      return { owner: "", repo: "", branch: "main", path: "public/catalog.json" };
-    }
-    return JSON.parse(raw) as {
-      owner: string;
-      repo: string;
-      branch: string;
-      path: string;
-    };
-  } catch {
-    return { owner: "", repo: "", branch: "main", path: "public/catalog.json" };
-  }
-}
 
 function newCategoryId(name: string) {
   return (
@@ -59,7 +42,10 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
   const [newItemName, setNewItemName] = useState("");
   const [newSpotName, setNewSpotName] = useState("");
   const [draft, setDraft] = useState<Catalog>(() => structuredClone(catalog));
-  const [gh, setGh] = useState(loadGithubSettings);
+  const [gh, setGh] = useState(() => {
+    const s = loadGithubSettings();
+    return { ...s, path: s.path.includes("catalog") ? s.path : "public/catalog.json" };
+  });
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -106,12 +92,13 @@ export function AdminScreen({ catalog, onCatalogChange, onBack, onEditMap, onLoc
   const handlePublish = async () => {
     setSaving(true);
     setStatus(null);
-    localStorage.setItem(GH_SETTINGS_KEY, JSON.stringify(gh));
-    const result = await publishCatalogToGithub(draft, { ...gh, token });
+    const settings = { ...gh, path: gh.path || "public/catalog.json" };
+    saveGithubSettings(settings);
+    const result = await publishCatalogToGithub(draft, { ...settings, token });
     setSaving(false);
     if (result.ok) {
       setStatus(
-        "Published to GitHub. After Pages rebuilds (usually under a minute), refresh on the iPad.",
+        "Published to GitHub. Run npm run deploy (or wait for Pages) so the iPad picks it up.",
       );
     } else {
       setStatus(result.error ?? "Publish failed.");

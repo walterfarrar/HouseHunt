@@ -7,7 +7,17 @@ import { SearchOverlay } from "./components/SearchOverlay";
 import { fetchCatalog, getCachedCatalog, isAdminUnlocked, lockAdmin } from "./catalog";
 import { doorBetweenRooms, doorToOutside, type OutsideEdge } from "./lib/doors";
 import { roomBounds } from "./lib/geometry";
-import { exportHouseJson, loadHouse, resetHouse, saveHouse } from "./storage";
+import {
+  exportHouseJson,
+  fetchSharedHouse,
+  importHouseFromJson,
+  loadHouse,
+  mergeSharedLayout,
+  publishHouseLayout,
+  resetHouse,
+  saveHouse,
+  touchHouse,
+} from "./storage";
 import type { AppMode, Catalog, Door, HouseData, Room, Selection, View } from "./types";
 import { OUTSIDE_ID } from "./types";
 import "./App.css";
@@ -34,6 +44,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [adminUnlocked, setAdminUnlocked] = useState(() => isAdminUnlocked());
   const [loginIntent, setLoginIntent] = useState<LoginIntent>(null);
+  const [syncStatus, setSyncStatus] = useState<string | null>(null);
 
   useEffect(() => {
     saveHouse(house);
@@ -44,6 +55,21 @@ export default function App() {
     fetchCatalog().then((remote) => {
       if (!cancelled) setCatalog(remote);
     });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const remote = await fetchSharedHouse();
+      if (cancelled || !remote) return;
+      setHouse((local) => {
+        const merged = mergeSharedLayout(local, remote);
+        return merged;
+      });
+    })();
     return () => {
       cancelled = true;
     };
@@ -128,17 +154,21 @@ export default function App() {
       : null;
 
   const updateRoom = (room: Room) => {
-    setHouse((h) => ({
-      ...h,
-      rooms: h.rooms.map((r) => (r.id === room.id ? room : r)),
-    }));
+    setHouse((h) =>
+      touchHouse({
+        ...h,
+        rooms: h.rooms.map((r) => (r.id === room.id ? room : r)),
+      }),
+    );
   };
 
   const updateDoor = (door: Door) => {
-    setHouse((h) => ({
-      ...h,
-      doors: h.doors.map((d) => (d.id === door.id ? door : d)),
-    }));
+    setHouse((h) =>
+      touchHouse({
+        ...h,
+        doors: h.doors.map((d) => (d.id === door.id ? door : d)),
+      }),
+    );
   };
 
   const addRoom = () => {
@@ -151,7 +181,7 @@ export default function App() {
       w: 3,
       h: 2.5,
     };
-    setHouse((h) => ({ ...h, rooms: [...h.rooms, room] }));
+    setHouse((h) => touchHouse({ ...h, rooms: [...h.rooms, room] }));
     setSelection({ kind: "room", id: room.id });
   };
 
@@ -185,7 +215,7 @@ export default function App() {
       toRoomId: b.id,
       ...placed,
     };
-    setHouse((h) => ({ ...h, doors: [...h.doors, door] }));
+    setHouse((h) => touchHouse({ ...h, doors: [...h.doors, door] }));
     setPlacingDoor(false);
     setDoorPickFirstId(null);
     setSelection({ kind: "door", id: door.id });
@@ -202,7 +232,7 @@ export default function App() {
       toRoomId: OUTSIDE_ID,
       ...placed,
     };
-    setHouse((h) => ({ ...h, doors: [...h.doors, door] }));
+    setHouse((h) => touchHouse({ ...h, doors: [...h.doors, door] }));
     setPlacingDoor(false);
     setDoorPickFirstId(null);
     setSelection({ kind: "door", id: door.id });
@@ -212,19 +242,21 @@ export default function App() {
     if (selection?.kind !== "room") return;
     const id = selection.id;
     if (!confirm("Delete this room, its doors, and its items?")) return;
-    setHouse((h) => ({
-      ...h,
-      rooms: h.rooms.filter((r) => r.id !== id),
-      doors: h.doors.filter((d) => d.fromRoomId !== id && d.toRoomId !== id),
-      items: h.items.filter((i) => i.roomId !== id),
-    }));
+    setHouse((h) =>
+      touchHouse({
+        ...h,
+        rooms: h.rooms.filter((r) => r.id !== id),
+        doors: h.doors.filter((d) => d.fromRoomId !== id && d.toRoomId !== id),
+        items: h.items.filter((i) => i.roomId !== id),
+      }),
+    );
     setSelection(null);
   };
 
   const deleteDoor = () => {
     if (selection?.kind !== "door") return;
     const id = selection.id;
-    setHouse((h) => ({ ...h, doors: h.doors.filter((d) => d.id !== id) }));
+    setHouse((h) => touchHouse({ ...h, doors: h.doors.filter((d) => d.id !== id) }));
     setSelection(null);
   };
 
@@ -240,9 +272,43 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "house-hunt-layout.json";
+    a.download = "house.json";
     a.click();
     URL.revokeObjectURL(url);
+    setSyncStatus("Downloaded house.json — you can Import it elsewhere or replace public/house.json.");
+  };
+
+  const doImportFile = async (file: File) => {
+    const text = await file.text();
+    const imported = importHouseFromJson(text);
+    if (!imported) {
+      setSyncStatus("Could not read that JSON file.");
+      return;
+    }
+    setHouse(
+      touchHouse({
+        ...imported,
+        items: house.items,
+      }),
+    );
+    setSyncStatus("Imported layout into this browser.");
+  };
+
+  const doPublishLayout = async (token: string) => {
+    const result = await publishHouseLayout(house, token, {
+      owner: "walterfarrar",
+      repo: "HouseHunt",
+      branch: "main",
+      path: "public/house.json",
+    });
+    if (result.ok) {
+      setHouse((h) => touchHouse(h));
+      setSyncStatus(
+        "Published to GitHub (public/house.json). Tell me to deploy, or run npm run deploy, then refresh the live site.",
+      );
+    } else {
+      setSyncStatus(result.error ?? "Publish failed.");
+    }
   };
 
   // Safety: never stay in edit mode without an unlock for this tab.
@@ -358,8 +424,8 @@ export default function App() {
           doorPickFirstId={placingDoor ? doorPickFirstId : null}
           placingDoor={placingDoor}
           onSelectRoom={(id) => setView({ screen: "room", roomId: id })}
-          onChangeRooms={(rooms) => setHouse((h) => ({ ...h, rooms }))}
-          onChangeDoors={(doors) => setHouse((h) => ({ ...h, doors }))}
+          onChangeRooms={(rooms) => setHouse((h) => touchHouse({ ...h, rooms }))}
+          onChangeDoors={(doors) => setHouse((h) => touchHouse({ ...h, doors }))}
           onSelect={setSelection}
           onRoomPickedForDoor={onRoomPickedForDoor}
         />
@@ -371,6 +437,7 @@ export default function App() {
             rooms={house.rooms}
             placingDoor={placingDoor}
             doorPickFirstId={doorPickFirstId}
+            syncStatus={syncStatus}
             onUpdateRoom={updateRoom}
             onUpdateDoor={updateDoor}
             onAddRoom={addRoom}
@@ -381,6 +448,8 @@ export default function App() {
             onDeleteDoor={deleteDoor}
             onReset={doReset}
             onExport={doExport}
+            onImportFile={doImportFile}
+            onPublishLayout={doPublishLayout}
             onOpenAdmin={openAdmin}
             onDone={() => {
               setMode("hunt");

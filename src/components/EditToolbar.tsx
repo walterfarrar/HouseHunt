@@ -1,6 +1,8 @@
+import { useRef, useState } from "react";
 import type { Door, Room } from "../types";
 import { OUTSIDE_ID } from "../types";
 import type { OutsideEdge } from "../lib/doors";
+import { loadGithubSettings } from "../lib/github";
 import { ROOM_COLOR_OPTIONS, ROOM_COLORS } from "./RoomButton";
 
 type Props = {
@@ -9,6 +11,7 @@ type Props = {
   rooms: Room[];
   placingDoor: boolean;
   doorPickFirstId: string | null;
+  syncStatus: string | null;
   onUpdateRoom: (room: Room) => void;
   onUpdateDoor: (door: Door) => void;
   onAddRoom: () => void;
@@ -19,6 +22,8 @@ type Props = {
   onDeleteDoor: () => void;
   onReset: () => void;
   onExport: () => void;
+  onImportFile: (file: File) => void;
+  onPublishLayout: (token: string) => Promise<void>;
   onOpenAdmin: () => void;
   onDone: () => void;
 };
@@ -29,6 +34,7 @@ export function EditToolbar({
   rooms,
   placingDoor,
   doorPickFirstId,
+  syncStatus,
   onUpdateRoom,
   onUpdateDoor,
   onAddRoom,
@@ -39,9 +45,16 @@ export function EditToolbar({
   onDeleteDoor,
   onReset,
   onExport,
+  onImportFile,
+  onPublishLayout,
   onOpenAdmin,
   onDone,
 }: Props) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [token, setToken] = useState("");
+  const [publishing, setPublishing] = useState(false);
+  const gh = loadGithubSettings();
+
   return (
     <aside className="edit-panel">
       <header className="edit-panel__head">
@@ -63,8 +76,27 @@ export function EditToolbar({
           {placingDoor ? "Cancel door" : "Add door"}
         </button>
         <button type="button" className="btn" onClick={onExport} disabled={placingDoor}>
-          Export JSON
+          Download layout
         </button>
+        <button
+          type="button"
+          className="btn"
+          disabled={placingDoor}
+          onClick={() => fileRef.current?.click()}
+        >
+          Import layout
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="application/json,.json"
+          hidden
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) onImportFile(file);
+            e.target.value = "";
+          }}
+        />
         <button type="button" className="btn btn--danger" onClick={onReset} disabled={placingDoor}>
           Reset layout
         </button>
@@ -72,6 +104,42 @@ export function EditToolbar({
           Admin lists
         </button>
       </div>
+
+      {!placingDoor && (
+        <div className="edit-panel__form">
+          <h3 className="edit-panel__sub">Share this house</h3>
+          <p className="hint">
+            Localhost and GitHub Pages do not share browser storage. Publish your floor plan, then
+            run <code>npm run deploy</code> so every device loads it.
+          </p>
+          <label className="field">
+            <span>GitHub token (Contents: read/write)</span>
+            <input
+              type="password"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder="ghp_…"
+              autoComplete="off"
+            />
+          </label>
+          <p className="hint">
+            Target: {gh.owner || "walterfarrar"}/{gh.repo || "HouseHunt"} — public/house.json
+          </p>
+          <button
+            type="button"
+            className="btn btn--primary"
+            disabled={placingDoor || publishing || !token}
+            onClick={async () => {
+              setPublishing(true);
+              await onPublishLayout(token);
+              setPublishing(false);
+            }}
+          >
+            {publishing ? "Publishing…" : "Publish layout to GitHub"}
+          </button>
+          {syncStatus && <p className="hint hint--emphasis">{syncStatus}</p>}
+        </div>
+      )}
 
       {placingDoor && (
         <div

@@ -3,6 +3,7 @@ import type { HouseData } from "../types";
 /** Digitized from the hand-drawn floor plan — rename/move in Edit mode. */
 export const initialHouse: HouseData = {
   version: 1,
+  updatedAt: "2026-01-01T00:00:00.000Z",
   rooms: [
     // Detached structures (left)
     { id: "r-a", name: "Outbuilding", x: 0.5, y: 0.5, w: 3.5, h: 3.2, accent: "sand" },
