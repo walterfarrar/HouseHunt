@@ -1,25 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-12T11:42:15.941Z",
+  "updatedAt": "2026-07-12T12:50:16.085Z",
   "rooms": [
-    {
-      "id": "r-a",
-      "name": "Garage 2",
-      "x": 0.5,
-      "y": 0.5,
-      "w": 3.5,
-      "h": 3.2,
-      "accent": "sand"
-    },
-    {
-      "id": "r-b",
-      "name": "Pool",
-      "x": 0.5,
-      "y": 8.25,
-      "w": 5.2,
-      "h": 3.4,
-      "accent": "sky"
-    },
     {
       "id": "r-c",
       "name": "Garage",
@@ -333,15 +315,6 @@
       "y": 7.25,
       "length": 0.75,
       "orientation": "h"
-    },
-    {
-      "id": "15e3ccfc-7818-4fa0-b4c5-7db2d29789b9",
-      "fromRoomId": "r-b",
-      "toRoomId": "outside",
-      "x": 5.75,
-      "y": 10,
-      "length": 0.75,
-      "orientation": "v"
     },
     {
       "id": "511892f1-21bc-4c2a-93a6-552dfc16daba",
