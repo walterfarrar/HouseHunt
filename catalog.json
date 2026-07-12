@@ -139,6 +139,10 @@
         {
           "name": "Oven mitts",
           "icon": "🧤"
+        },
+        {
+          "name": "Cup",
+          "icon": "🥛"
         }
       ]
     },
@@ -375,7 +379,7 @@
     {
       "id": "seasonal",
       "name": "Clothing",
-      "icon": "☂️",
+      "icon": "👖",
       "items": [
         {
           "name": "Jacket",
