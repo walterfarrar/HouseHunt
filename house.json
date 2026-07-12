@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-12T12:50:16.085Z",
+  "updatedAt": "2026-07-12T22:29:54.568Z",
   "rooms": [
     {
       "id": "r-c",
@@ -50,25 +50,25 @@
       "id": "r-h",
       "name": "Breakfast",
       "x": 11.25,
-      "y": 3.25,
+      "y": 1.25,
       "w": 3.5,
-      "h": 2.5,
+      "h": 3.5,
       "accent": "moss"
     },
     {
       "id": "r-i",
       "name": "Living Room",
       "x": 14.75,
-      "y": 1.75,
-      "w": 2.75,
-      "h": 4,
+      "y": 2.75,
+      "w": 2.5,
+      "h": 3,
       "accent": "olive"
     },
     {
       "id": "r-j",
       "name": "Bar",
-      "x": 13.25,
-      "y": 1.75,
+      "x": 14.75,
+      "y": 1.25,
       "w": 1.5,
       "h": 1.5
     },
@@ -191,20 +191,11 @@
       "orientation": "v"
     },
     {
-      "id": "642dd1db-308b-427d-9fef-eba7c8d145e4",
-      "fromRoomId": "r-h",
-      "toRoomId": "r-j",
-      "x": 14,
-      "y": 3.25,
-      "length": 0.75,
-      "orientation": "h"
-    },
-    {
       "id": "bbe5f642-7a13-43ea-af3c-34f6dbd63111",
       "fromRoomId": "r-h",
       "toRoomId": "r-i",
       "x": 14.75,
-      "y": 4.5,
+      "y": 3.75,
       "length": 0.75,
       "orientation": "v"
     },
@@ -322,6 +313,15 @@
       "toRoomId": "outside",
       "x": 14.75,
       "y": 6.75,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "a07c681e-ae07-4b9f-ae29-f5c9f416358b",
+      "fromRoomId": "r-h",
+      "toRoomId": "r-j",
+      "x": 14.75,
+      "y": 2,
       "length": 0.75,
       "orientation": "v"
     }
