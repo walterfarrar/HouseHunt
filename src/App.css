@@ -749,6 +749,22 @@ select {
   border: 2px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
 
+.log-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 16%, #fff);
+  border: 2px solid var(--accent);
+  font-weight: 600;
+}
+
+.log-toast__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
 .item__main {
   display: flex;
   align-items: center;

@@ -1,12 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Catalog, Item, Room } from "../types";
-
-type Step =
-  | { phase: "home" }
-  | { phase: "category" }
-  | { phase: "item"; categoryId: string }
-  | { phase: "spot"; categoryId: string; itemName: string; itemIcon?: string }
-  | { phase: "done"; itemName: string; itemIcon?: string; spot?: string };
 
 type Props = {
   room: Room;
@@ -17,19 +10,30 @@ type Props = {
   onDeleteItem: (id: string) => void;
 };
 
+type Toast = { name: string; icon?: string };
+
 export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteItem }: Props) {
-  const [step, setStep] = useState<Step>({ phase: "home" });
+  const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
+  const [toast, setToast] = useState<Toast | null>(null);
+  const toastTimer = useRef<number | null>(null);
 
-  const category =
-    step.phase === "item" || step.phase === "spot"
-      ? catalog.categories.find((c) => c.id === step.categoryId)
-      : null;
+  useEffect(() => {
+    return () => {
+      if (toastTimer.current) window.clearTimeout(toastTimer.current);
+    };
+  }, []);
 
-  const cancelFind = () => setStep({ phase: "home" });
+  const category = openCategoryId
+    ? (catalog.categories.find((c) => c.id === openCategoryId) ?? null)
+    : null;
 
-  const save = (itemName: string, categoryId: string, spot?: string, icon?: string) => {
-    onAddItem(itemName, { categoryId, spot, icon });
-    setStep({ phase: "done", itemName, itemIcon: icon, spot });
+  const logItem = (name: string, categoryId: string, icon?: string) => {
+    onAddItem(name, { categoryId, icon });
+    setToast({ name, icon });
+    if (toastTimer.current) window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => setToast(null), 2600);
+    // Back to categories so logging another thing is just two more taps.
+    setOpenCategoryId(null);
   };
 
   return (
@@ -39,30 +43,31 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
           ← Back to map
         </button>
         <h1>{room.name}</h1>
-        <p className="lede">Things logged in this room</p>
+        <p className="lede">
+          {category ? "Tap what you found" : "Tap a category, then tap what you found"}
+        </p>
       </header>
 
-      {step.phase === "home" && (
-        <button type="button" className="btn btn--hero" onClick={() => setStep({ phase: "category" })}>
-          I found something
-        </button>
+      {toast && (
+        <div className="log-toast" role="status">
+          <span className="log-toast__icon" aria-hidden="true">
+            {toast.icon ?? "✅"}
+          </span>
+          <span>
+            Logged <strong>{toast.name}</strong>
+          </span>
+        </div>
       )}
 
-      {step.phase === "category" && (
+      {!category && (
         <div className="find-flow">
-          <div className="find-flow__nav">
-            <button type="button" className="btn btn--back" onClick={cancelFind}>
-              ← Cancel
-            </button>
-          </div>
-          <h2 className="find-flow__title">What kind of thing?</h2>
           <div className="tap-grid">
             {catalog.categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
                 className="tap-tile"
-                onClick={() => setStep({ phase: "item", categoryId: cat.id })}
+                onClick={() => setOpenCategoryId(cat.id)}
               >
                 {cat.icon && (
                   <span className="tap-tile__icon" aria-hidden="true">
@@ -76,13 +81,13 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
         </div>
       )}
 
-      {step.phase === "item" && category && (
+      {category && (
         <div className="find-flow">
           <div className="find-flow__nav">
             <button
               type="button"
               className="btn btn--back"
-              onClick={() => setStep({ phase: "category" })}
+              onClick={() => setOpenCategoryId(null)}
             >
               ← Categories
             </button>
@@ -97,14 +102,7 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
                 key={item.name}
                 type="button"
                 className="tap-tile"
-                onClick={() =>
-                  setStep({
-                    phase: "spot",
-                    categoryId: category.id,
-                    itemName: item.name,
-                    itemIcon: item.icon,
-                  })
-                }
+                onClick={() => logItem(item.name, category.id, item.icon)}
               >
                 {item.icon && (
                   <span className="tap-tile__icon" aria-hidden="true">
@@ -118,62 +116,7 @@ export function RoomScreen({ room, items, catalog, onBack, onAddItem, onDeleteIt
         </div>
       )}
 
-      {step.phase === "spot" && (
-        <div className="find-flow">
-          <div className="find-flow__nav">
-            <button
-              type="button"
-              className="btn btn--back"
-              onClick={() => setStep({ phase: "item", categoryId: step.categoryId })}
-            >
-              ← Items
-            </button>
-          </div>
-          <h2 className="find-flow__title">Where in the room?</h2>
-          <p className="lede">
-            Logging: {step.itemIcon && <span aria-hidden="true">{step.itemIcon} </span>}
-            <strong>{step.itemName}</strong>
-          </p>
-          <div className="tap-grid">
-            {catalog.spots.map((spot) => (
-              <button
-                key={spot}
-                type="button"
-                className="tap-tile"
-                onClick={() => save(step.itemName, step.categoryId, spot, step.itemIcon)}
-              >
-                {spot}
-              </button>
-            ))}
-            <button
-              type="button"
-              className="tap-tile tap-tile--muted"
-              onClick={() => save(step.itemName, step.categoryId, undefined, step.itemIcon)}
-            >
-              Skip — just save it
-            </button>
-          </div>
-        </div>
-      )}
-
-      {step.phase === "done" && (
-        <div className="find-flow find-flow--done">
-          <p className="find-flow__thanks">Got it — thanks!</p>
-          <p className="lede">
-            {step.itemIcon && <span aria-hidden="true">{step.itemIcon} </span>}
-            <strong>{step.itemName}</strong>
-            {step.spot ? ` · ${step.spot}` : ""}
-          </p>
-          <button type="button" className="btn btn--hero" onClick={cancelFind}>
-            Find another
-          </button>
-          <button type="button" className="btn btn--back" onClick={onBack}>
-            ← Back to map
-          </button>
-        </div>
-      )}
-
-      {step.phase === "home" && (
+      {!category && (
         <ul className="item-list">
           {items.length === 0 && <li className="item-list__empty">Nothing logged here yet.</li>}
           {items.map((item) => (
