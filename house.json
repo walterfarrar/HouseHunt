@@ -1,20 +1,357 @@
-﻿{
+{
   "version": 1,
-  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "updatedAt": "2026-07-12T11:42:15.941Z",
   "rooms": [
-    { "id": "r-a", "name": "Outbuilding", "x": 0.5, "y": 0.5, "w": 3.5, "h": 3.2, "accent": "sand" },
-    { "id": "r-b", "name": "Garage", "x": 0.5, "y": 8.2, "w": 5.2, "h": 3.4, "accent": "slate" },
-    { "id": "r-c", "name": "Room C", "x": 6.2, "y": 1.8, "w": 2.6, "h": 3.6 },
-    { "id": "r-d", "name": "Room D", "x": 6.2, "y": 5.5, "w": 2.6, "h": 2.4 },
-    { "id": "r-e", "name": "Room E", "x": 9.0, "y": 1.2, "w": 2.8, "h": 2.6 },
-    { "id": "r-f", "name": "Room F", "x": 11.9, "y": 1.2, "w": 2.4, "h": 2.6 },
-    { "id": "r-g", "name": "Great Room", "x": 9.0, "y": 4.0, "w": 5.3, "h": 5.5, "accent": "sage" },
-    { "id": "r-h", "name": "Room H", "x": 14.5, "y": 1.0, "w": 3.2, "h": 1.9 },
-    { "id": "r-i", "name": "Room I", "x": 14.5, "y": 3.0, "w": 3.2, "h": 1.9 },
-    { "id": "r-j", "name": "Room J", "x": 14.5, "y": 5.0, "w": 3.2, "h": 1.9 },
-    { "id": "r-k", "name": "Room K", "x": 14.5, "y": 7.0, "w": 3.2, "h": 1.9 },
-    { "id": "r-l", "name": "Room L", "x": 14.5, "y": 9.0, "w": 3.2, "h": 1.9 }
+    {
+      "id": "r-a",
+      "name": "Garage 2",
+      "x": 0.5,
+      "y": 0.5,
+      "w": 3.5,
+      "h": 3.2,
+      "accent": "sand"
+    },
+    {
+      "id": "r-b",
+      "name": "Pool",
+      "x": 0.5,
+      "y": 8.25,
+      "w": 5.2,
+      "h": 3.4,
+      "accent": "sky"
+    },
+    {
+      "id": "r-c",
+      "name": "Garage",
+      "x": 6,
+      "y": 1,
+      "w": 3,
+      "h": 4.75,
+      "accent": "sand"
+    },
+    {
+      "id": "r-d",
+      "name": "Storage",
+      "x": 6,
+      "y": 5.75,
+      "w": 3,
+      "h": 1.5,
+      "accent": "slate"
+    },
+    {
+      "id": "r-e",
+      "name": "Kitchen",
+      "x": 9,
+      "y": 1,
+      "w": 2.25,
+      "h": 3.25
+    },
+    {
+      "id": "r-f",
+      "name": "Utility",
+      "x": 9,
+      "y": 4.3,
+      "w": 2.25,
+      "h": 1.5,
+      "accent": "mist"
+    },
+    {
+      "id": "r-g",
+      "name": "Sun Room",
+      "x": 14.75,
+      "y": 5.75,
+      "w": 2.75,
+      "h": 3.5,
+      "accent": "clay"
+    },
+    {
+      "id": "r-h",
+      "name": "Breakfast",
+      "x": 11.25,
+      "y": 3.25,
+      "w": 3.5,
+      "h": 2.5,
+      "accent": "moss"
+    },
+    {
+      "id": "r-i",
+      "name": "Living Room",
+      "x": 14.75,
+      "y": 1.75,
+      "w": 2.75,
+      "h": 4,
+      "accent": "olive"
+    },
+    {
+      "id": "r-j",
+      "name": "Bar",
+      "x": 13.25,
+      "y": 1.75,
+      "w": 1.5,
+      "h": 1.5
+    },
+    {
+      "id": "76cb92d9-97fa-4ba5-b4d4-8585d3ac8c5f",
+      "name": "Hall",
+      "x": 17.5,
+      "y": 4.25,
+      "w": 3.25,
+      "h": 1.5,
+      "accent": "slate"
+    },
+    {
+      "id": "903cd44e-e3bd-4c07-a872-e039b0ad2c69",
+      "name": "Bath Room",
+      "x": 17.5,
+      "y": 2,
+      "w": 1.75,
+      "h": 2.25,
+      "accent": "teal"
+    },
+    {
+      "id": "2b920bb3-73ec-4896-9b30-20b547aaeab8",
+      "name": "Hall",
+      "x": 19.25,
+      "y": 1.75,
+      "w": 1.5,
+      "h": 2.5,
+      "accent": "slate"
+    },
+    {
+      "id": "c44aef06-1d9c-43ee-a966-deacf034f466",
+      "name": "Office",
+      "x": 17.5,
+      "y": 5.75,
+      "w": 3.25,
+      "h": 2.5
+    },
+    {
+      "id": "1712a070-516a-4a91-b27d-e9c74fc551c8",
+      "name": "Bedroom",
+      "x": 20.75,
+      "y": 3.75,
+      "w": 2.5,
+      "h": 2,
+      "accent": "rose"
+    },
+    {
+      "id": "1d1cd511-37b1-4b62-9448-7f1a6705d6a6",
+      "name": "Bedroom",
+      "x": 20.75,
+      "y": 1.75,
+      "w": 2.5,
+      "h": 2,
+      "accent": "rose"
+    },
+    {
+      "id": "1bb3ddc5-3f5f-4115-a4d8-80db9e5e29d5",
+      "name": "Bed Room",
+      "x": 19,
+      "y": -0.25,
+      "w": 2.25,
+      "h": 2,
+      "accent": "rose"
+    },
+    {
+      "id": "e24978b0-0f31-4b31-80dd-728db51eb7df",
+      "name": "Bath Room",
+      "x": 20.75,
+      "y": 5.75,
+      "w": 2.5,
+      "h": 1.75,
+      "accent": "teal"
+    },
+    {
+      "id": "1aa7e2ec-8f71-4786-ab4f-63c56f14a09e",
+      "name": "Bath Room",
+      "x": 21.25,
+      "y": -0.25,
+      "w": 2,
+      "h": 2,
+      "accent": "teal"
+    }
   ],
-  "doors": [],
+  "doors": [
+    {
+      "id": "bd7e9dc0-2d61-4a81-a6d8-bd7d77fc2175",
+      "fromRoomId": "r-c",
+      "toRoomId": "r-f",
+      "x": 9,
+      "y": 5,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "2b1af219-03d2-4564-bf4e-77c32de46e74",
+      "fromRoomId": "r-c",
+      "toRoomId": "r-d",
+      "x": 8.25,
+      "y": 5.75,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "b7498b9e-bc66-4ac8-afaa-28416ca1a23d",
+      "fromRoomId": "r-f",
+      "toRoomId": "r-e",
+      "x": 10.5,
+      "y": 4.25,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "293084dd-b37c-4ef0-9159-6ae7bd546032",
+      "fromRoomId": "r-e",
+      "toRoomId": "r-h",
+      "x": 11.25,
+      "y": 3.75,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "642dd1db-308b-427d-9fef-eba7c8d145e4",
+      "fromRoomId": "r-h",
+      "toRoomId": "r-j",
+      "x": 14,
+      "y": 3.25,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "bbe5f642-7a13-43ea-af3c-34f6dbd63111",
+      "fromRoomId": "r-h",
+      "toRoomId": "r-i",
+      "x": 14.75,
+      "y": 4.5,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "46dc556a-aee8-4c73-8ddc-a41239dd276f",
+      "fromRoomId": "r-i",
+      "toRoomId": "r-g",
+      "x": 16,
+      "y": 5.75,
+      "length": 2.25,
+      "orientation": "h"
+    },
+    {
+      "id": "cb16bb3f-0e75-4ffa-8bce-3620322d06f1",
+      "fromRoomId": "r-i",
+      "toRoomId": "76cb92d9-97fa-4ba5-b4d4-8585d3ac8c5f",
+      "x": 17.5,
+      "y": 5,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "07e74377-f3f1-43c3-98b0-8d3b4bd743db",
+      "fromRoomId": "r-g",
+      "toRoomId": "c44aef06-1d9c-43ee-a966-deacf034f466",
+      "x": 17.5,
+      "y": 7,
+      "length": 1.25,
+      "orientation": "v"
+    },
+    {
+      "id": "7023e32d-5bb1-437f-b14e-07f1ab9b57a2",
+      "fromRoomId": "76cb92d9-97fa-4ba5-b4d4-8585d3ac8c5f",
+      "toRoomId": "903cd44e-e3bd-4c07-a872-e039b0ad2c69",
+      "x": 18.5,
+      "y": 4.25,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "820c62bb-5709-4531-99ce-f98444b04209",
+      "fromRoomId": "76cb92d9-97fa-4ba5-b4d4-8585d3ac8c5f",
+      "toRoomId": "1712a070-516a-4a91-b27d-e9c74fc551c8",
+      "x": 20.75,
+      "y": 5,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "fc11e086-7975-431f-aa4e-e1b09ff05f39",
+      "fromRoomId": "2b920bb3-73ec-4896-9b30-20b547aaeab8",
+      "toRoomId": "1d1cd511-37b1-4b62-9448-7f1a6705d6a6",
+      "x": 20.75,
+      "y": 2.75,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "eb912275-33ec-4314-b967-ee6ba397afe2",
+      "fromRoomId": "2b920bb3-73ec-4896-9b30-20b547aaeab8",
+      "toRoomId": "1bb3ddc5-3f5f-4115-a4d8-80db9e5e29d5",
+      "x": 20,
+      "y": 1.75,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "b40c1c8e-6b09-4f97-b585-930a533d6b0a",
+      "fromRoomId": "1bb3ddc5-3f5f-4115-a4d8-80db9e5e29d5",
+      "toRoomId": "1aa7e2ec-8f71-4786-ab4f-63c56f14a09e",
+      "x": 21.25,
+      "y": 0.75,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "21c41706-1f8b-40e2-9f39-cca695539781",
+      "fromRoomId": "1aa7e2ec-8f71-4786-ab4f-63c56f14a09e",
+      "toRoomId": "1d1cd511-37b1-4b62-9448-7f1a6705d6a6",
+      "x": 22.25,
+      "y": 1.75,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "4d769ba0-910e-4357-a6c4-9b52d8ad3b58",
+      "fromRoomId": "1712a070-516a-4a91-b27d-e9c74fc551c8",
+      "toRoomId": "e24978b0-0f31-4b31-80dd-728db51eb7df",
+      "x": 22.5,
+      "y": 5.75,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "969aff52-f791-42cd-a295-0eec5433ed47",
+      "fromRoomId": "r-c",
+      "toRoomId": "outside",
+      "x": 6,
+      "y": 3.5,
+      "length": 3.25,
+      "orientation": "v"
+    },
+    {
+      "id": "9b966f2f-039a-48ba-8312-b17a5b43a08c",
+      "fromRoomId": "r-d",
+      "toRoomId": "outside",
+      "x": 8.25,
+      "y": 7.25,
+      "length": 0.75,
+      "orientation": "h"
+    },
+    {
+      "id": "15e3ccfc-7818-4fa0-b4c5-7db2d29789b9",
+      "fromRoomId": "r-b",
+      "toRoomId": "outside",
+      "x": 5.75,
+      "y": 10,
+      "length": 0.75,
+      "orientation": "v"
+    },
+    {
+      "id": "511892f1-21bc-4c2a-93a6-552dfc16daba",
+      "fromRoomId": "r-g",
+      "toRoomId": "outside",
+      "x": 14.75,
+      "y": 6.75,
+      "length": 0.75,
+      "orientation": "v"
+    }
+  ],
   "items": []
 }
