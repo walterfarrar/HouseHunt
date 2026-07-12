@@ -85,34 +85,57 @@ export async function publishJsonToGithub(
     "X-GitHub-Api-Version": "2022-11-28",
   };
 
-  let sha: string | undefined;
-  const existing = await fetch(`${apiBase}?ref=${encodeURIComponent(branch)}`, { headers });
-  if (existing.ok) {
-    const body = (await existing.json()) as { sha?: string };
-    sha = body.sha;
-  } else if (existing.status !== 404) {
-    const text = await existing.text();
-    return { ok: false, error: `Could not read file on GitHub (${existing.status}): ${text}` };
-  }
+  // GitHub's Contents API GET can be served from cache with a stale sha, which
+  // then makes the PUT fail with 409. Read fresh, and if the PUT still hits a
+  // conflict, re-read the latest sha and retry a couple of times.
+  const readSha = async (): Promise<{ sha?: string; error?: string }> => {
+    const res = await fetch(
+      `${apiBase}?ref=${encodeURIComponent(branch)}&t=${Date.now()}`,
+      { headers, cache: "no-store" },
+    );
+    if (res.ok) {
+      const body = (await res.json()) as { sha?: string };
+      return { sha: body.sha };
+    }
+    if (res.status === 404) return { sha: undefined };
+    return { error: `Could not read file on GitHub (${res.status}): ${await res.text()}` };
+  };
 
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  const put = await fetch(apiBase, {
-    method: "PUT",
-    headers: { ...headers, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      message,
-      content,
-      branch,
-      ...(sha ? { sha } : {}),
-    }),
-  });
 
-  if (!put.ok) {
+  let sha: string | undefined;
+  const firstRead = await readSha();
+  if (firstRead.error) return { ok: false, error: firstRead.error };
+  sha = firstRead.sha;
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const put = await fetch(apiBase, {
+      method: "PUT",
+      headers: { ...headers, "Content-Type": "application/json" },
+      cache: "no-store",
+      body: JSON.stringify({
+        message,
+        content,
+        branch,
+        ...(sha ? { sha } : {}),
+      }),
+    });
+
+    if (put.ok) return { ok: true };
+
+    // 409/422 = sha mismatch (someone/somecache raced us). Re-read and retry.
+    if ((put.status === 409 || put.status === 422) && attempt < 2) {
+      const retry = await readSha();
+      if (retry.error) return { ok: false, error: retry.error };
+      sha = retry.sha;
+      continue;
+    }
+
     const text = await put.text();
     return { ok: false, error: `Publish failed (${put.status}): ${text}` };
   }
 
-  return { ok: true };
+  return { ok: false, error: "Publish failed after retries. Try again." };
 }
 
 /**
