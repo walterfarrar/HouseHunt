@@ -1,6 +1,6 @@
 {
-  "name": "House Hunt",
-  "short_name": "House Hunt",
+  "name": "House Inventory",
+  "short_name": "House Inventory",
   "description": "Map the house and log where things are.",
   "start_url": ".",
   "display": "standalone",
